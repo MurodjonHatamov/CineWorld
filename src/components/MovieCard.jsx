@@ -30,10 +30,12 @@ sm:max-w-[130px]
           rounded-xl
           transition-all duration-300 ease-out
           group-hover:-bottom-0
+          max-sm:px-2 max-sm:py-1
+max-sm:-bottom-0
 
         "
       >
-        <h3 className="text-lg font-bold">{movie?.title ? movie.title : movie.name}</h3>
+        <h3 className="text-lg font-bold   max-sm:text-[14px] max-sm:font-normal line-clamp-1">{movie?.title ? movie.title : movie.name}</h3>
         <p className="text-sm text-gray-200">Fantasy</p>
       </div>
 
