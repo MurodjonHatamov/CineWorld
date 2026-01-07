@@ -36,7 +36,7 @@ max-sm:-bottom-0
         "
       >
         <h3 className="text-lg font-bold   max-sm:text-[14px] max-sm:font-normal line-clamp-1">{movie?.title ? movie.title : movie.name}</h3>
-        <p className="text-sm text-gray-200">Fantasy</p>
+        <p className="text-sm text-gray-200 underline">Ko'rish </p>
       </div>
 
     </div>

@@ -25,16 +25,16 @@ function SwiperCard({title,movies,type,sectionId}) {
     <div className="mb-20 ">
       {/* Glass header */}
       <div className="mb-8 px-6">
-        <div className="flex items-center justify-between ">
+        <div className="flex items-center justify-between  ">
           <div>
           
-            <h2 className='text-2xl font-bold text-white'>
+            <h2 className='text-2xl font-bold text-white max-sm:text-[16px]'>
            {title}
             </h2>
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 max-sm:hidden">
               <button 
                 onClick={handlePrev}
                 className="w-10 h-10 rounded-full bg-gray-800/50 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 border border-gray-700   cursor-pointer"
@@ -49,7 +49,7 @@ function SwiperCard({title,movies,type,sectionId}) {
               </button>
             </div>
             
-            <button className='group flex items-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-gray-800 backdrop-blur-sm rounded-xl sm:textBtn '>
+            <button className='group flex items-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-gray-800 backdrop-blur-sm rounded-xl max-sm:px-3 max-sm:py-1.5 '>
               <Link to={`/section/${type}/${sectionId}`} className='flex items-center gap-2 text-base font-medium '>
                 Batafsil
                 <MdNavigateNext className="text-xl transform group-hover:translate-x-1 transition-transform" />
