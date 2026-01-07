@@ -1,0 +1,58 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+/* Custom styles */
+body {
+  background-color: #000000; /* bg-gray-900 */
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+@theme{
+    --font-cinzel: 'Cinzel', serif;
+--font-roboto: 'Roboto', sans-serif;
+}
+
+@layer components{
+.iconBtn{
+    @apply w-9  h-9   rounded-full text-white flex items-center justify-center hover:bg-gray-800 transition-colors duration-300 cursor-pointer; 
+}
+.textBtn{
+    @apply hover:bg-gray-800 px-3 py-2 rounded-lg cursor-pointer transition-colors duration-300;
+
+}
+.container{
+    @apply max-w-7xl mx-auto mt-2
+ ;
+}
+/* Scrollni yashirish */
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE, Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;             /* Chrome, Safari */
+  }
+  
+}
+
+
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 2s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 1.5s linear infinite;
+}
