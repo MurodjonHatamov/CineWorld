@@ -19,6 +19,7 @@ function HeaderSlider() {
   useEffect(() => {
     fetchMovies("/trending/movie/week",language).then(data => setSlides(data));
   }, [language]);
+console.log(slides);
 
   return (
     <div className="relative mt-20 rounded-2xl overflow-hidden">
@@ -51,7 +52,7 @@ function HeaderSlider() {
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
-            <div className="relative h-[500px] md:h-[600px] rounded-2xl overflow-hidden group">
+            <div className="relative h-[500px] md:h-[550px] max-sm:h-[300px] rounded-2xl overflow-hidden group">
               {/* Background Image with Overlay */}
               <div className="absolute inset-0">
               <div 
@@ -78,10 +79,30 @@ function HeaderSlider() {
   />
 
   {/* Text */}
-  <div className="absolute bottom-10 left-10 text-white max-w-md">
-    <h2 className="text-3xl font-bold">{slide.title}</h2>
-    <p className="mt-2 text-sm line-clamp-3">{slide.overview}</p>
+  <div className="absolute bottom-13 left-10 text-white max-w-md sm:hidden">
+    <h2 className="text-3xl font-bold max-sm:line-clamp-1 ">{slide.title}</h2>
+    <p className="mt-2 text-sm line-clamp-2 mb-2">{slide.overview}</p>
+    <div className="flex items-center gap-4">
+    <div className="flex items-center space-x-2 bg-gray-900/100 backdrop-blur-sm px-3 py-2 rounded-xl">
+                        <FaStar className="text-yellow-400 text-lg" />
+                        <span className="text-[15px] font-bold text-white">{Math.round(slide.vote_average)}</span>
+                        <span className="text-gray-400">/10</span>
+
+
+                      </div>
+                      <button className="group px-3  py-[10px] bg-gray-900/100 backdrop-blur-sm text-white font-bold rounded-xl  ">
+                        <div className="flex items-center space-x-1">
+                          
+                          <span className="text-sm sm:text-base cursor-pointer">Ko'proq malumot</span>
+                        
+                          <MdNavigateNext className="text-lg"/>
+                        </div>
+                      </button>
+            
+    </div>
   </div>
+
+  
 </div>
   
                 {/* Gradient Overlays */}
@@ -96,27 +117,24 @@ function HeaderSlider() {
                 <div className="max-w-4xl">
                   {/* Movie Info */}
                   <div 
-                    className="swiper-parallax"
+                    className="swiper-parallax max-sm:hidden"
                     data-swiper-parallax="-100"
-                    data-swiper-parallax-duration="800"
+                    data-swiper-parallax-duration="700"
                   >
                    
 
                     {/* Title */}
                     <h2 
-                      className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight"
+                      className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white m leading-tight"
                       data-swiper-parallax="-200"
                     >
                       {slide.title}
                     </h2>
 
                     {/* Description */}
-                    <p 
-                      className="text-base sm:text-lg md:text-xl text-gray-200 mb-6 max-w-xl leading-relaxed"
-                      data-swiper-parallax="-300"
-                    >
-                      {slide.description}
-                    </p>
+                   <p data-swiper-parallax="-250" className='mb-3'>
+                      {slide.overview}
+                   </p>
 
                     {/* Stats */}
                     <div 
@@ -126,9 +144,10 @@ function HeaderSlider() {
                       {/* Rating */}
                       <div className="flex items-center space-x-2 bg-gray-900/70 backdrop-blur-sm px-4 py-2 rounded-xl">
                         <FaStar className="text-yellow-400 text-lg" />
-                        <span className="text-2xl font-bold text-white">{slide.rating}</span>
+                        <span className="text-2xl font-bold text-white">{Math.round(slide.vote_average)}</span>
                         <span className="text-gray-400">/10</span>
                       </div>
+
                       <button className="group px-6 sm:px-8 py-3 bg-gray-900/70 backdrop-blur-sm text-white font-bold rounded-xl hover:bg-gray-800/70 border border-gray-700 hover:border-gray-600 transition-all duration-300">
                         <div className="flex items-center space-x-3">
                           

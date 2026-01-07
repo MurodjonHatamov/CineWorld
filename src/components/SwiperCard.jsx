@@ -22,7 +22,7 @@ function SwiperCard({title,movies,type,sectionId}) {
   };
 
   return (
-    <div className="mb-20 ">
+    <div className="mb-20 max-sm:mb-8 ">
       {/* Glass header */}
       <div className="mb-8 px-6">
         <div className="flex items-center justify-between  ">
