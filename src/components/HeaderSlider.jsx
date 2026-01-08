@@ -117,7 +117,7 @@ console.log(slides);
                 <div className="max-w-4xl">
                   {/* Movie Info */}
                   <div 
-                    className="swiper-parallax max-sm:hidden"
+                    className="swiper-parallax max-sm:hidden  "
                     data-swiper-parallax="-100"
                     data-swiper-parallax-duration="700"
                   >

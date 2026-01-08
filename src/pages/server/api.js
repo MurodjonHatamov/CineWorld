@@ -94,9 +94,9 @@ export const fetchCategory = async (language="en-US") => {
 
   // src/constants/languages.js
 export const LANGUAGES = [
-  { code: "uz-UZ", label: "O‘zbekcha 🇺🇿" },
-  { code: "ru-RU", label: "Русский 🇷🇺" },
-  { code: "en-US", label: "English 🇺🇸" },
+  { code: "uz-UZ", label: "Uz" },
+  { code: "ru-RU", label: "Rus" },
+  { code: "en-US", label: "Eng" },
 ];
 
 

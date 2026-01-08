@@ -1,4 +1,5 @@
 import React from 'react'
+import { FaStar } from 'react-icons/fa'
 
 function MovieCard({movie}) {
 
@@ -12,6 +13,22 @@ sm:max-w-[130px]
 
     
     " >
+
+
+<div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-black/60 backdrop-blur text-white text-sm font-semibold absolute top-2 right-2 z-50">
+  <FaStar className="text-yellow-400" />
+  <span>{Math.round(movie.vote_average)}</span>
+</div>
+
+{movie.adult && 
+  
+  <div className="top-2 left-2 absolute w-8 h-8 z-10   flex items-center justify-center text-xs rounded-full bg-red-600">
+      <span className='  text-white'>18+</span>
+</div>
+
+
+}
+
       
       <img
         src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}

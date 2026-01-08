@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { CgMenuGridO } from "react-icons/cg";
-import { IoSearch } from "react-icons/io5";
+import { IoMenu, IoSearch } from "react-icons/io5";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { fetchCategory, LANGUAGES } from "../pages/server/api";
 import { useLanguage } from "../pages/LanguageContext";
 
-function Navbar({setIsLoading}) {
-const [isSearch,setIsSearch]=useState(false)
+function Navbar({setIsLoading, isMenuOpen, setIsMenuOpen}) {
+
 const [menuCategory,setMenuCategory]=useState(false)
 const [genres, setGenres] = useState([]);
 const navigation=useNavigate()
@@ -37,7 +37,7 @@ setIsLoading(false)
 <div className="flex items-center gap-10">
 <Link to={"/"}>
 <h2 className="text-2xl text-white font-cinzel">CineWorld</h2></Link>
-  <ul className="flex items-center gap-4">
+  <ul className="flex items-center gap-4  max-sm:hidden">
     <li>
       <NavLink
         to="/"
@@ -63,7 +63,7 @@ setIsLoading(false)
 
           <div className="flex items-center gap-3">
 
-            <div className=" iconBtn" onClick={()=>{setIsSearch(!isSearch)}}>
+            <div className=" iconBtn">
             <IoSearch  className="text-lg"/>
             </div>
             <select  value={language}
@@ -78,7 +78,7 @@ setIsLoading(false)
 
   
 </select>
-<div className="relative">
+<div className="relative max-sm:hidden">
 <div 
 onMouseEnter={() => setMenuCategory(true)}
 onClick={()=>{
@@ -110,32 +110,18 @@ className="iconBtn">
 }
 </div>
 
+<div  onClick={()=>{
+              setIsMenuOpen(true)
+            }} className="">
 
+<IoMenu  className="text-3xl p-1   rounded-full text-white flex items-center justify-center hover:bg-gray-800 transition-colors duration-300 cursor-pointer"/>
+
+</div>
           </div>
         </div>
 
 
-        {
-    isSearch &&    <div className="   bg-gray-800 w-2xl  absolute z-30 top-20  left-70 flex justify-center p-5   rounded-2xl   ">
-    <input
-      type="text"
-      placeholder="Search..."
-      className="
-        outline
-        outline-2
-        border border-gray-700
-        outline-transparent
-        focus:outline-blue-500
-        rounded-md
-        px-3
-        py-2
-        transition
-        w-full
-      "
-    />
-    
-    </div>
-}
+        
       </div>
 
 

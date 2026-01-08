@@ -17,20 +17,21 @@ import Sidebar from './components/Sidebar';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-
+const [isMenuOpen,setIsMenuOpen]=useState(false)
   useEffect(()=>{
     fetchCategory()
     
   },[])
 
 
+  
 
   return (
     <>  
     <BrowserRouter>
 <LanguageProvider>
-<Navbar setIsLoading={setIsLoading}/>
-<Sidebar isLoading={isLoading} />
+<Navbar      isMenuOpen={isMenuOpen}     setIsMenuOpen={setIsMenuOpen}          setIsLoading={setIsLoading}/>
+<Sidebar      setIsMenuOpen={setIsMenuOpen}     isMenuOpen={isMenuOpen}          isLoading={isLoading} />
     <Loader isLoading={isLoading} setIsLoading={setIsLoading} />
     <Routes>
       <Route path="/" element={<Home  setIsLoading={setIsLoading}/>}/>
