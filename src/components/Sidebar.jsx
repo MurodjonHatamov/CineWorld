@@ -27,12 +27,12 @@ function Sidebar({   isMenuOpen, setIsMenuOpen}) {
 
   const handleNavigation = (path) => {
     navigate(path);
-    onClose(); // Close sidebar on navigation
+    
   };
 
   const handleGenreClick = (genreId) => {
     navigate(`/genre/${genreId}`);
-    onClose();
+
   };
 
   return (
@@ -49,9 +49,10 @@ function Sidebar({   isMenuOpen, setIsMenuOpen}) {
 
       {/* Sidebar */}
       <div className={`
-        fixed top-0 left-0 h-screen w-64
-        bg-gray-900 
-        transform transition-transform duration-300  z-50
+          fixed top-0 left-0 h-screen w-64
+    bg-gray-900
+    transform transition-transform duration-200 ease-out
+    z-50
         ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         overflow-y-auto border-r border-gray-800
       `}>
@@ -59,7 +60,9 @@ function Sidebar({   isMenuOpen, setIsMenuOpen}) {
         {/* Sidebar header */}
         <div className="p-4 border-b border-gray-800">
           <div className="flex items-center justify-between">
-            <Link to={"/"}>
+            <Link  onClick={()=>{setIsMenuOpen(false)
+
+}} to={"/"}>
               <h2 className="text-2xl text-white font-cinzel">CineWorld</h2>
             </Link>
             <button 
@@ -80,9 +83,13 @@ function Sidebar({   isMenuOpen, setIsMenuOpen}) {
             {mainMenu.map((item) => (
               <button
                 key={item.id}
-                onClick={() => handleNavigation(item.path)}
-                className="w-full flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
-              >
+                onClick={() =>{
+                  setIsMenuOpen(false)
+                  handleNavigation(item.path)
+
+                 
+                } }
+                className="w-full flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-colors">
                 <span className="mr-3">{item.icon}</span>
                 <span>{item.label}</span>
               </button>
@@ -97,7 +104,11 @@ function Sidebar({   isMenuOpen, setIsMenuOpen}) {
             {genres.map((genre) => (
               <button
                 key={genre.id}
-                onClick={() => handleGenreClick(genre.id)}
+                onClick={() => {handleGenreClick(genre.id)
+
+
+                  setIsMenuOpen(false)
+                }}
                 className="w-full px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-colors text-left"
               >
                 {genre.name}
