@@ -38,7 +38,7 @@ const [isMenuOpen,setIsMenuOpen]=useState(false)
       <Route path="/tv" element={<Tv  setIsLoading={setIsLoading}/>}/>
       <Route path="/categories" element={<Categories  setIsLoading={setIsLoading}/>}/>
       <Route path="/genre/:id" element={<Genre  setIsLoading={setIsLoading}/>}/>
-      <Route path="/movie" element={<MovieDetail setIsLoading={setIsLoading}/>}/>
+      <Route path="/movie/:id" element={<MovieDetail  setIsLoading={setIsLoading}/>} />
       <Route path="/section/:type/:id" element={<SectionDetail setIsLoading={setIsLoading}/>}/>
     </Routes>
 <Footer/>

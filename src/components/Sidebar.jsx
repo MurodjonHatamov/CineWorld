@@ -27,7 +27,7 @@ function Sidebar({   isMenuOpen, setIsMenuOpen}) {
 
   const handleNavigation = (path) => {
     navigate(path);
-    
+      
   };
 
   const handleGenreClick = (genreId) => {

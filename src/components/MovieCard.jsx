@@ -1,11 +1,14 @@
 import React from 'react'
 import { FaStar } from 'react-icons/fa'
+import { Link } from 'react-router-dom';
 
 function MovieCard({movie}) {
 
+    console.log(movie);
     
   return (
-    <div className=" rounded-2xl overflow-hidden relative group cursor-pointer min-w-[260px]      
+<Link to={`/movie/${movie.id}`}>
+<div className=" rounded-2xl overflow-hidden relative group cursor-pointer min-w-[260px]      
     max-sm:min-w-[100px]
     md:min-w-[220px]
     lg:min-w-[260px]
@@ -56,7 +59,7 @@ max-sm:-bottom-0
         <p className="text-sm text-gray-200 underline">Ko'rish </p>
       </div>
 
-    </div>
+    </div></Link>
   )
 }
 

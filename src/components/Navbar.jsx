@@ -112,7 +112,7 @@ className="iconBtn">
 
 <div  onClick={()=>{
               setIsMenuOpen(true)
-            }} className="">
+            }} className=" hidden max-sm:flex">
 
 <IoMenu  className="text-3xl p-1   rounded-full text-white flex items-center justify-center hover:bg-gray-800 transition-colors duration-300 cursor-pointer"/>
 

@@ -121,3 +121,52 @@ export const LANGUAGES = [
     }
   };
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const fetchBasicMovieDetail = async (id, language = 'en-US') => {
+  try {
+    const [
+      detailRes,
+      creditsRes,
+      videosRes,
+      similarRes
+    ] = await Promise.all([
+      fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=${language}`),
+      fetch(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}`),
+      fetch(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}`),
+      fetch(`${BASE_URL}/movie/${id}/similar?api_key=${API_KEY}&language=${language}`)
+    ]);
+
+    const detail = await detailRes.json();
+    const credits = await creditsRes.json();
+    const videos = await videosRes.json();
+    const similar = await similarRes.json();
+
+    // 🎬 Trailer tanlab olish
+    const trailer =
+      videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube') ||
+      videos.results.find(v => v.site === 'YouTube');
+
+    return {
+      detail,
+      cast: credits.cast.slice(0, 12), // faqat eng muhimlari
+      trailer, // bitta trailer
+      similar: similar.results.slice(0, 12)
+    };
+  } catch (error) {
+    console.error('Error fetching movie data:', error);
+    throw error;
+  }
+};
