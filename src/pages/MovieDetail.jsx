@@ -19,10 +19,17 @@ function MovieDetail() {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   useEffect(() => {
+    
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
     setLoading(true);
     fetchBasicMovieDetail(id)
       .then(res => {
         setData(res);
+        console.log(res);
+        
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -76,7 +83,7 @@ function MovieDetail() {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
       {/* HERO SECTION */}
       <div
-        className="relative h-[80vh] bg-cover bg-top"
+        className="relative h-[80vh] bg-cover bg-top mt-18"
         style={{
           backgroundImage: `url(${IMAGE_BASE}${detail.backdrop_path})`
         }}
@@ -88,7 +95,7 @@ function MovieDetail() {
           <div className="max-w-6xl mx-auto w-full">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-[30px]">
               {/* Poster */}
-              <div className="w-48 md:w-64 flex-shrink-0">
+              <div className="w-48 md:w-64 flex-shrink-0 " >
                 <img 
                   src={`https://image.tmdb.org/t/p/w500${detail.poster_path}`}
                   alt={detail.title}
@@ -161,27 +168,9 @@ function MovieDetail() {
                     </a>
                   )}
 
-                  {/* Like button */}
-                  <button 
-                    onClick={() => setIsLiked(!isLiked)}
-                    className={`p-3 rounded-xl ${isLiked ? 'bg-red-600' : 'bg-gray-800/50'} hover:bg-gray-700/50 transition-colors`}
-                    title={isLiked ? "Yoqmaydi" : "Yoqadi"}
-                  >
-                    <FaHeart className={isLiked ? 'text-white' : 'text-gray-400'} />
-                  </button>
-
-                  {/* Bookmark button */}
-                  <button 
-                    onClick={() => setIsBookmarked(!isBookmarked)}
-                    className={`p-3 rounded-xl ${isBookmarked ? 'bg-blue-600' : 'bg-gray-800/50'} hover:bg-gray-700/50 transition-colors`}
-                    title={isBookmarked ? "Saqlangan" : "Saqlash"}
-                  >
-                    <FaBookmark className={isBookmarked ? 'text-white' : 'text-gray-400'} />
-                  </button>
-
                   {/* Share button */}
                   <button 
-                    className="p-3 rounded-xl bg-gray-800/50 hover:bg-gray-700/50 transition-colors"
+                    className="p-3 rounded-xl cursor-pointer bg-gray-700/50 transition-colors"
                     title="Ulashish"
                   >
                     <FaShare className="text-gray-400" />
@@ -293,6 +282,8 @@ function MovieDetail() {
                       className="px-3 py-1 bg-gray-800 rounded-full text-sm"
                     >
                       {company.name}
+                      
+               
                     </span>
                   ))}
                 </div>
