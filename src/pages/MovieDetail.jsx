@@ -1,32 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { fetchBasicMovieDetail } from '../pages/server/api';
-import { FaStar, FaPlay, FaCalendarAlt, FaClock, FaHeart, FaBookmark, FaShare } from 'react-icons/fa';
-import { IoIosArrowForward } from 'react-icons/io';
-import MovieCard from '../components/MovieCard';
-import { IoEarthOutline } from 'react-icons/io5';
-import { MdOutlinePlayCircle } from 'react-icons/md';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { fetchBasicMovieDetail } from "../pages/server/api";
+import {
+  FaStar,
+  FaCalendarAlt,
+  FaClock,
+  FaShare,
+  FaExternalLinkAlt,
+} from "react-icons/fa";
+import { IoEarthOutline } from "react-icons/io5";
+import { MdOutlinePlayCircle } from "react-icons/md";
+import MovieCard from "../components/MovieCard";
 
-const IMAGE_BASE = 'https://image.tmdb.org/t/p/original';
-const IMAGE_SMALL = 'https://image.tmdb.org/t/p/w185';
+const IMAGE_ORIGINAL = "https://image.tmdb.org/t/p/original";
+const IMAGE_W500 = "https://image.tmdb.org/t/p/w500";
+const IMAGE_W185 = "https://image.tmdb.org/t/p/w185";
+
+const FALLBACK_BACKDROP =
+  "https://via.placeholder.com/1600x900?text=No+Backdrop";
+const FALLBACK_POSTER =
+  "https://via.placeholder.com/500x750?text=No+Poster";
+const FALLBACK_AVATAR =
+  "https://img.freepik.com/premium-photo/no-clapboard-png-symbol-forbidden-sign-transparent-background_53876-950740.jpg?semt=ais_hybrid&w=740&q=80";
 
 function MovieDetail() {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showTrailer, setShowTrailer] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
 
   useEffect(() => {
-    
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
     setLoading(true);
     fetchBasicMovieDetail(id)
-      .then(res => {
+      .then((res) => {
         setData(res);
         console.log(res);
         
@@ -35,22 +43,52 @@ function MovieDetail() {
       .catch(() => setLoading(false));
   }, [id]);
 
+  const formatRuntime = (minutes) => {
+    if (!minutes) return "N/A";
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}h ${mins}m`;
+  };
+
+  const formatCurrency = (amount) => {
+    if (!amount) return "N/A";
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  const copyShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      alert("Link nusxalandi ✅");
+    } catch {
+      // fallback
+      prompt("Linkni nusxalab oling:", window.location.href);
+    }
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-gray-800 border-t-blue-500 rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="w-14 h-14 border-4 border-white/10 border-t-white rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center">
-        <div className="text-white text-center">
-          <h2 className="text-2xl mb-4">Film topilmadi</h2>
-          <button 
+      <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          <h2 className="text-2xl font-bold mb-3">Film topilmadi</h2>
+          <p className="text-white/70 mb-6">
+            ID noto‘g‘ri bo‘lishi yoki serverda xatolik bo‘lishi mumkin.
+          </p>
+          <button
             onClick={() => window.history.back()}
-            className="px-6 py-2 bg-blue-600 rounded-lg hover:bg-blue-700"
+            className="px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition"
           >
             Orqaga qaytish
           </button>
@@ -59,121 +97,149 @@ function MovieDetail() {
     );
   }
 
-  const { detail, cast, trailer, similar } = data;
+  const { detail, cast = [], trailer, similar = [] } = data;
 
-  // Format runtime
-  const formatRuntime = (minutes) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${hours}h ${mins}m`;
-  };
+  const title = detail?.title || detail?.name || "Nomsiz";
+  const year = detail?.release_date ? detail.release_date.split("-")[0] : "—";
+  const rating =
+    typeof detail?.vote_average === "number"
+      ? detail.vote_average.toFixed(1)
+      : "—";
 
-  // Format currency
-  const formatCurrency = (amount) => {
-    if (amount === 0) return 'N/A';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
+  const backdrop = detail?.backdrop_path
+    ? `${IMAGE_ORIGINAL}${detail.backdrop_path}`
+    : FALLBACK_BACKDROP;
+
+  const poster = detail?.poster_path
+    ? `${IMAGE_W500}${detail.poster_path}`
+    : FALLBACK_POSTER;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
-      {/* HERO SECTION */}
-      <div
-        className="relative h-[80vh] bg-cover bg-top mt-18"
-        style={{
-          backgroundImage: `url(${IMAGE_BASE}${detail.backdrop_path})`
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-900/70 to-transparent"></div>
+    <div className="min-h-screen bg-black text-white">
+      {/* HERO */}
+      <div className="relative">
+        <div
+          className="h-[62vh] md:h-[70vh] bg-cover bg-center"
+          style={{ backgroundImage: `url(${backdrop})` }}
+        />
+        {/* overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
 
-        <div className="relative h-full flex items-center p-4 md:p-10">
-          <div className="max-w-6xl mx-auto w-full">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-[30px]">
-              {/* Poster */}
-              <div className="w-48 md:w-64 flex-shrink-0 " >
-                <img 
-                  src={`https://image.tmdb.org/t/p/w500${detail.poster_path}`}
-                  alt={detail.title}
-                  className="w-full h-auto rounded-xl shadow-2xl"
-                />
+        {/* content */}
+        <div className="absolute inset-0">
+          <div className="max-w-6xl mx-auto px-4 md:px-8 h-full flex items-end pb-8 md:pb-12">
+            <div className="w-full flex flex-col md:flex-row gap-6 md:gap-10 items-start">
+              {/* poster */}
+              <div className="w-36 md:w-60 shrink-0">
+                <div className="rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+                  <img
+                    src={poster}
+                    alt={title}
+                    className="w-full h-auto object-cover"
+                    loading="lazy"
+                    onError={(e) => (e.currentTarget.src = FALLBACK_POSTER)}
+                  />
+                </div>
               </div>
 
-              {/* Movie info */}
+              {/* info */}
               <div className="flex-1">
-                <h2 className='text-3xl md:text-5xl font-bold mb-3'>
-                  {detail.title}
-                  {detail.adult && (
-                    <span className="ml-3 text-sm bg-red-600 px-2 py-1 rounded align-middle">
+                <div className="flex flex-wrap items-center gap-2 mb-3">
+                  {detail?.adult && (
+                    <span className="px-2 py-1 text-xs rounded-lg bg-red-600/90">
                       18+
                     </span>
                   )}
-                </h2>
-                
-                {/* Genres */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {detail.genres?.map(genre => (
-                    <span key={genre.id} className="px-3 py-1 bg-gray-800/90 rounded-full text-sm">
-                      {genre.name}
+                  {detail?.status && (
+                    <span className="px-2 py-1 text-xs rounded-lg bg-white/10 border border-white/10">
+                      {detail.status}
                     </span>
-                  ))}
-                </div>
-
-                {/* Stats */}
-                <div className="flex flex-wrap items-center gap-4 mb-6">
-                  <div className="flex items-center gap-2">
-                    <FaStar className="text-yellow-400" />
-                    <span className="text-2xl font-bold">{detail.vote_average?.toFixed(1)}</span>
-                    <span className="text-gray-400">/10</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <FaCalendarAlt className="text-blue-400" />
-                    <span>{detail.release_date?.split('-')[0]}</span>
-                  </div>
-
-                  {detail.runtime && (
-                    <div className="flex items-center gap-2">
-                      <FaClock className="text-green-400" />
-                      <span>{formatRuntime(detail.runtime)}</span>
-                    </div>
                   )}
                 </div>
 
-                {/* Action buttons */}
-                <div className="flex flex-wrap gap-3 mb-6">
-                  {/* Trailer button */}
-                  <button 
+                <h1 className="text-3xl md:text-5xl font-extrabold leading-tight">
+                  {title}
+                </h1>
+
+                {detail?.tagline && (
+                  <p className="text-white/70 mt-2 italic line-clamp-2">
+                    “{detail.tagline}”
+                  </p>
+                )}
+
+                {/* meta chips */}
+                <div className="flex flex-wrap items-center gap-3 mt-5">
+                  <span className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 border border-white/10">
+                    <FaStar className="text-yellow-400" />
+                    <span className="font-semibold">{rating}</span>
+                    <span className="text-white/60 text-sm">/10</span>
+                  </span>
+
+                  <span className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 border border-white/10">
+                    <FaCalendarAlt className="text-blue-400" />
+                    <span className="font-medium">{year}</span>
+                  </span>
+
+                  <span className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 border border-white/10">
+                    <FaClock className="text-green-400" />
+                    <span className="font-medium">
+                      {formatRuntime(detail?.runtime)}
+                    </span>
+                  </span>
+
+                  {detail?.origin_country?.length > 0 && (
+                    <span className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 border border-white/10">
+                      <IoEarthOutline className="text-emerald-400" />
+                      <span className="font-medium">
+                        {detail.origin_country.join(", ")}
+                      </span>
+                    </span>
+                  )}
+                </div>
+
+                {/* genres */}
+                {detail?.genres?.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-5">
+                    {detail.genres.map((g) => (
+                      <span
+                        key={g.id}
+                        className="px-3 py-1 rounded-full text-sm bg-white/10 border border-white/10 hover:bg-white/15 transition"
+                      >
+                        {g.name}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {/* actions */}
+                <div className="flex flex-wrap gap-3 mt-6">
+                  <button
                     onClick={() => setShowTrailer(true)}
-                    className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 cursor-pointer"
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-red-600 hover:bg-red-700 font-semibold transition active:scale-[0.98]"
                   >
                     <MdOutlinePlayCircle className="text-xl" />
-                    <span>Treyler</span>
+                    Treyler
                   </button>
 
-                  {/* Watch movie button */}
-                  {detail.homepage && (
+                  {detail?.homepage && (
                     <a
                       href={detail.homepage}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition-all duration-300 hover:scale-105"
+                      className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-black hover:bg-white/90 font-semibold transition active:scale-[0.98]"
                     >
-                      Kinoga o'tish
-                      <IoIosArrowForward />
+                      Kinoga o‘tish <FaExternalLinkAlt className="text-sm" />
                     </a>
                   )}
 
-                  {/* Share button */}
-                  <button 
-                    className="p-3 rounded-xl cursor-pointer bg-gray-700/50 transition-colors"
+                  <button
+                    onClick={copyShare}
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 border border-white/10 hover:bg-white/15 transition active:scale-[0.98]"
                     title="Ulashish"
                   >
-                    <FaShare className="text-gray-400" />
+                    <FaShare />
+                    Link
                   </button>
                 </div>
               </div>
@@ -182,176 +248,133 @@ function MovieDetail() {
         </div>
       </div>
 
-      {/* CAST SECTION */}
-      <section className="py-8 px-4 md:px-10 max-w-6xl mx-auto">
-        <h2 className="text-2xl font-bold mb-6">Aktyorlar</h2>
-        <div className="flex items-center gap-4 overflow-x-auto pb-4 scrollbar-hide">
-          {cast.map(actor => (
-            <div 
-              key={actor.id} 
-              className="flex-shrink-0 text-center group cursor-pointer"
-              title={`${actor.name} as ${actor.character}`}
-            >
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-blue-500 transition-colors">
-                <img
-                  src={
-                    actor.profile_path
-                      ? `${IMAGE_SMALL}${actor.profile_path}`
-                      : 'https://via.placeholder.com/100x100?text=No+Image'
-                  }
-                  alt={actor.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-              </div>
-              <p className="text-sm font-medium mt-2 truncate w-20 md:w-24">{actor.name}</p>
-              <p className="text-xs text-gray-400 truncate w-20 md:w-24">{actor.character}</p>
+      {/* BODY */}
+      <div className="max-w-6xl mx-auto px-4 md:px-8 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* LEFT */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* overview */}
+            <div className="rounded-2xl bg-white/5 border border-white/10 p-5 md:p-6">
+              <h2 className="text-xl font-bold mb-3">Tavsif</h2>
+              <p className="text-white/75 leading-relaxed">
+                {detail?.overview || "Tavsif mavjud emas."}
+              </p>
             </div>
-          ))}
-        </div>
-      </section>
 
-      {/* MOVIE DETAILS SECTION */}
-      <section className="py-8 px-4 md:px-10 max-w-6xl mx-auto bg-gray-900/50 rounded-2xl my-8">
-        <div className="space-y-6">
-          {/* Title and tagline */}
-          <div>
-            <h2 className="text-3xl font-bold mb-2">{detail.title}</h2>
-            {detail.tagline && (
-              <p className="italic text-gray-400 text-lg">"{detail.tagline}"</p>
-            )}
+            {/* cast */}
+            <div className="rounded-2xl bg-white/5 border border-white/10 p-5 md:p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold">Aktyorlar</h2>
+                <span className="text-sm text-white/60">
+                  {cast.length} ta
+                </span>
+              </div>
+
+              <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                {cast.slice(0, 18).map((actor) => (
+                  <div
+                    key={actor.id}
+                    className="shrink-0 w-24 text-center group"
+                    title={`${actor.name} as ${actor.character}`}
+                  >
+                    <div className="w-20 h-20 mx-auto rounded-2xl overflow-hidden ring-1 ring-white/10 group-hover:ring-white/30 transition">
+                      <img
+                        src={
+                          actor.profile_path
+                            ? `${IMAGE_W185}${actor.profile_path}`
+                            : FALLBACK_AVATAR
+                        }
+                        alt={actor.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition"
+                        loading="lazy"
+                        onError={(e) => (e.currentTarget.src = FALLBACK_AVATAR)}
+                      />
+                    </div>
+                    <p className="mt-2 text-sm font-medium line-clamp-1">
+                      {actor.name}
+                    </p>
+                    <p className="text-xs text-white/60 line-clamp-1">
+                      {actor.character}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Meta info */}
-          <div className="flex flex-wrap gap-4 text-sm">
-            <span className="flex items-center gap-1">
-              <FaStar className="text-yellow-400" /> 
-              {detail.vote_average.toFixed(1)} ({detail.vote_count} ovoz)
-            </span>
-            <span className="flex items-center gap-1">
-              <FaClock className="text-green-400" /> 
-              {formatRuntime(detail.runtime)}
-            </span>
-            <span className="flex items-center gap-1">
-              <FaCalendarAlt className="text-blue-400" /> 
-              {detail.release_date}
-            </span>
-            {detail.origin_country?.length > 0 && (
-              <span className="flex items-center gap-1">
-                <IoEarthOutline className="text-green-500" /> 
-                {detail.origin_country.join(', ')}
-              </span>
-            )}
-            <span className={detail.adult ? 'text-red-400' : 'text-green-400'}>
-              {detail.adult ? '🔞 18+' : '👨‍👩‍👧‍👦 Family'}
-            </span>
-          </div>
-
-          {/* Overview */}
-          <div>
-            <h3 className="text-xl font-semibold mb-3">Tavsif</h3>
-            <p className="text-gray-300 leading-relaxed">{detail.overview}</p>
-          </div>
-
-          {/* Production info grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Languages */}
-            {detail.spoken_languages?.length > 0 && (
-              <div>
-                <h4 className="text-lg font-semibold mb-2">Tillar</h4>
-                <div className="flex flex-wrap gap-2">
-                  {detail.spoken_languages.map((lang) => (
-                    <span
-                      key={lang.iso_639_1}
-                      className="px-3 py-1 bg-gray-800 rounded-full text-sm"
-                    >
-                      {lang.english_name}
-                    </span>
-                  ))}
+          {/* RIGHT */}
+          <div className="space-y-6">
+            {/* stats */}
+            <div className="rounded-2xl bg-white/5 border border-white/10 p-5 md:p-6">
+              <h2 className="text-xl font-bold mb-4">Ma’lumot</h2>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-white/60">Release</span>
+                  <span className="font-semibold">
+                    {detail?.release_date || "—"}
+                  </span>
                 </div>
-              </div>
-            )}
-
-            {/* Production companies */}
-            {detail.production_companies?.length > 0 && (
-              <div>
-                <h4 className="text-lg font-semibold mb-2">Prodakshn kompaniyalar</h4>
-                <div className="flex flex-wrap gap-2">
-                  {detail.production_companies.map((company) => (
-                    <span
-                      key={company.id}
-                      className="px-3 py-1 bg-gray-800 rounded-full text-sm"
-                    >
-                      {company.name}
-                      
-               
-                    </span>
-                  ))}
+                <div className="flex items-center justify-between">
+                  <span className="text-white/60">Runtime</span>
+                  <span className="font-semibold">
+                    {formatRuntime(detail?.runtime)}
+                  </span>
                 </div>
-              </div>
-            )}
-          </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-white/60">Budget</span>
+                  <span className="font-semibold">
+                    {formatCurrency(detail?.budget)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-white/60">Revenue</span>
+                  <span className="font-semibold">
+                    {formatCurrency(detail?.revenue)}
+                  </span>
+                </div>
 
-          {/* Stats grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-gray-800/30 p-4 rounded-xl">
-              <p className="text-gray-400 text-sm">Byudjet</p>
-              <p className="font-bold text-lg">{formatCurrency(detail.budget)}</p>
-            </div>
-            <div className="bg-gray-800/30 p-4 rounded-xl">
-              <p className="text-gray-400 text-sm">Daromad</p>
-              <p className="font-bold text-lg">{formatCurrency(detail.revenue)}</p>
-            </div>
-            <div className="bg-gray-800/30 p-4 rounded-xl">
-              <p className="text-gray-400 text-sm">Holati</p>
-              <p className="font-bold text-lg">{detail.status}</p>
-            </div>
-            {detail.imdb_id && (
-              <div className="bg-gray-800/30 p-4 rounded-xl">
-                <p className="text-gray-400 text-sm">IMDb</p>
-                <a
-                  href={`https://www.imdb.com/title/${detail.imdb_id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-400 hover:underline font-semibold"
-                >
-                  IMDb sahifasi
-                </a>
+                {detail?.imdb_id && (
+                  <a
+                    href={`https://www.imdb.com/title/${detail.imdb_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-white/10 border border-white/10 hover:bg-white/15 transition font-semibold"
+                  >
+                    IMDb sahifasi <FaExternalLinkAlt className="text-sm" />
+                  </a>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* SIMILAR MOVIES SECTION */}
-      {similar?.length > 0 && (
-        <section className="py-8 px-4 md:px-10 max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">O'xshash Filmlar</h2>
-            <button className="text-blue-400 hover:text-blue-300 text-sm font-medium">
-              Barchasini ko'rish →
-            </button>
-          </div>
-          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-            {similar.map(movie => (
-              <div key={movie.id} className="flex-shrink-0 w-48">
-                <MovieCard movie={movie} />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+        {/* similar */}
+        {similar?.length > 0 && (
+          <div className="mt-10">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-2xl font-bold">O‘xshash filmlar</h2>
+            </div>
 
-      {/* TRAILER MODAL */}
-      {showTrailer && trailer && (
+            <div className="flex gap-4 overflow-x-auto pb-3 scrollbar-hide">
+              {similar.slice(0, 14).map((m) => (
+                <MovieCard key={m.id} movie={m} />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Trailer modal */}
+      {showTrailer && trailer?.key && (
         <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-4xl">
+          <div className="relative w-full max-w-5xl">
             <button
               onClick={() => setShowTrailer(false)}
-              className="absolute -top-10 right-0 text-white text-2xl hover:text-gray-300 p-2"
+              className="absolute -top-12 right-0 text-white/80 hover:text-white text-2xl p-2"
             >
               ✕
             </button>
-            <div className="aspect-video rounded-xl overflow-hidden">
+            <div className="aspect-video rounded-2xl overflow-hidden ring-1 ring-white/10">
               <iframe
                 className="w-full h-full"
                 src={`https://www.youtube.com/embed/${trailer.key}?autoplay=1`}
@@ -364,7 +387,7 @@ function MovieDetail() {
         </div>
       )}
 
-      {/* Custom CSS for scrollbar */}
+      {/* scrollbar hide */}
       <style jsx>{`
         .scrollbar-hide {
           -ms-overflow-style: none;
