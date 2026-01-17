@@ -1,24 +1,20 @@
 import React from "react";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaImage } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const IMG_BASE = "https://image.tmdb.org/t/p/w500";
-const FALLBACK_POSTER =
-  "https://via.placeholder.com/500x750?text=No+Poster";
 
 function MovieCard({ movie }) {
   if (!movie) return null;
 
   const title = movie.title || movie.name || "Nomsiz";
-  const poster = movie.poster_path ? `${IMG_BASE}${movie.poster_path}` : FALLBACK_POSTER;
+  const hasPoster = Boolean(movie.poster_path);
+  const poster = hasPoster ? `${IMG_BASE}${movie.poster_path}` : null;
 
-  // vote_average 0 bo‘lsa ham ko‘rsatsin
   const rating =
     typeof movie.vote_average === "number"
       ? Math.round(movie.vote_average)
       : null;
-
-  const isAdult = Boolean(movie.adult);
 
   return (
     <Link to={`/movie/${movie.id}`} className="block">
@@ -29,46 +25,64 @@ function MovieCard({ movie }) {
           max-sm:min-w-[100px]
           md:min-w-[220px]
           lg:min-w-[260px]
-          sm:max-w-[130px]
         "
       >
+        {/* ⭐ Rating */}
         {rating !== null && (
-          <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-black/60 backdrop-blur text-white text-sm font-semibold absolute top-2 right-2 z-50">
+          <div className="absolute top-2 right-2 z-20 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-black/60 backdrop-blur text-white text-sm font-semibold">
             <FaStar className="text-yellow-400" />
             <span>{rating}</span>
           </div>
         )}
 
-        {isAdult && (
-          <div className="top-2 left-2 absolute w-8 h-8 z-10 flex items-center justify-center text-xs rounded-full bg-red-600">
-            <span className="text-white">18+</span>
+        {/* 🔞 Adult */}
+        {movie.adult && (
+          <div className="absolute top-2 left-2 z-20 w-8 h-8 rounded-full bg-red-600 text-white text-xs flex items-center justify-center">
+            18+
           </div>
         )}
 
-        <img
-          src={poster}
-          alt={title}
-          loading="lazy"
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            e.currentTarget.src = FALLBACK_POSTER;
-          }}
-        />
+        {/* 🖼 IMAGE OR ANIMATED PLACEHOLDER */}
+        {hasPoster ? (
+          <img
+            src={poster}
+            alt={title}
+            loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        ) : (
+          <div
+            className="
+              w-full h-full aspect-[2/3]
+              flex flex-col items-center justify-center
+              bg-gradient-to-br from-black/10 via-black/30 to-black/90
+              animate-pulse
+            "
+          >
+            <FaImage className="text-4xl text-white/40 mb-2" />
+            <span className="text-white/40 text-sm tracking-wide">
+              No Image
+            </span>
+          </div>
+        )}
 
+        {/* 👇 Hover Overlay */}
         <div
           className="
             absolute left-1/2 -translate-x-1/2 w-full
             px-6 py-3 text-center text-white
-            bg-black/40 backdrop-blur-md rounded-xl
+            bg-black/50 backdrop-blur-md
             transition-all duration-300 ease-out
             -bottom-32 group-hover:bottom-0
-            max-sm:px-2 max-sm:py-1 max-sm:bottom-0
+            max-sm:bottom-0 max-sm:px-2 max-sm:py-1
           "
         >
-          <h3 className="text-lg font-bold max-sm:text-[14px] max-sm:font-normal line-clamp-1">
+          <h3 className="text-lg font-bold max-sm:text-sm line-clamp-1">
             {title}
           </h3>
-          <p className="text-sm text-gray-200 underline">Ko'rish</p>
+          <p className="text-sm text-gray-300 underline">
+            Ko‘rish
+          </p>
         </div>
       </div>
     </Link>

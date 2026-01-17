@@ -4,27 +4,34 @@ export const API_KEY = "87ea6600c90ed06f2a15fff32ae9ac23";
 export const BASE_URL = "https://api.themoviedb.org/3";
 
 
-  export const fetchMovies = async (endpoint,language="en-US") => {
-    try {
-      const res = await fetch(
-        `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=${language}`
-      );
-      const data = await res.json();
-      return data.results;
-    } catch (err) {
-      console.error("API error:", err);
-      return [];
-    }
-  };
+export const fetchMovies = async (
+  endpoint,
+  language = "en-US",
+  options = {}
+) => {
+  try {
+    const randomPage =
+      options.randomPage
+        ? Math.floor(Math.random() * (options.maxPage || 10)) + 1
+        : options.page || 1;
+
+    const res = await fetch(
+      `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=${language}&page=${randomPage}`
+    );
+
+    const data = await res.json();
+    return data.results || [];
+  } catch (err) {
+    console.error("API error:", err);
+    return [];
+  }
+};
+
   
 
 
 
-  fetchMovies("/trending/movie/week") // Header
-fetchMovies("/movie/popular")       // Ommabop
-fetchMovies("/movie/top_rated")     // Eng yaxshi
-fetchMovies("/movie/now_playing")   // Hozir kinoteatrda
-fetchMovies("/discover/movie")      // Tavsiya
+
 
 export const fetchCategory = async (language="en-US") => {
     try {
@@ -35,7 +42,7 @@ export const fetchCategory = async (language="en-US") => {
       const data = await res.json();
   
   
-      return data.genres; // 👈 MUHIM
+      return data.genres; 
     } catch (err) {
       console.error("Category API error:", err);
       return [];
@@ -170,3 +177,29 @@ export const fetchBasicMovieDetail = async (id, language = 'en-US') => {
     throw error;
   }
 };
+
+
+
+
+export const searchMulti = async (query, language = "en-US", page = 1) => {
+  try {
+    const q = encodeURIComponent(query);
+
+    const res = await fetch(
+      `${BASE_URL}/search/multi?api_key=${API_KEY}&language=${language}&query=${q}&page=${page}&include_adult=false`
+    );
+
+    const data = await res.json();
+    return {
+      results: data.results || [],
+      page: data.page || 1,
+      total_pages: data.total_pages || 1,
+      total_results: data.total_results || 0,
+    };
+  } catch (e) {
+    console.error("Search error:", e);
+    return { results: [], page: 1, total_pages: 1, total_results: 0 };
+  }
+};
+
+

@@ -43,7 +43,7 @@ function MovieDetail() {
     fetchBasicMovieDetail(id)
       .then((res) => {
         setData(res);
-        console.log(res);
+
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -625,16 +625,7 @@ function MovieDetail() {
         </div>
       )}
 
-      {/* scrollbar hide */}
-      <style jsx>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
+    
     </div>
   );
 }

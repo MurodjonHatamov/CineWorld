@@ -14,6 +14,7 @@ import MovieDetail from './pages/MovieDetail';
 import SectionDetail from './pages/SectionDetail';
 import { LanguageProvider } from './pages/LanguageContext';
 import Sidebar from './components/Sidebar';
+import SearchPage from './pages/SearchPage';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +41,8 @@ const [isMenuOpen,setIsMenuOpen]=useState(false)
       <Route path="/genre/:id" element={<Genre  setIsLoading={setIsLoading}/>}/>
       <Route path="/movie/:id" element={<MovieDetail  setIsLoading={setIsLoading}/>} />
       <Route path="/section/:type/:id" element={<SectionDetail setIsLoading={setIsLoading}/>}/>
+      <Route path="/search" element={<SearchPage  setIsLoading={setIsLoading}/>} />
+
     </Routes>
 <Footer/>
 </LanguageProvider>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HeaderSlider from "../components/HeaderSlider";
 import SwiperCard from "../components/SwiperCard";
-import { fetchMovies, fetchCategory, movieSections } from "./server/api";
+import { fetchMovies, fetchCategory, movieSections, searchMulti } from "./server/api";
 import { useLanguage } from "./LanguageContext";
 import { Link } from "react-router-dom";
 
@@ -14,6 +14,7 @@ function Home({ setIsLoading }) {
 
   // Sections (movies)
   useEffect(() => {
+
     let mounted = true;
 
     const loadSections = async () => {
@@ -22,7 +23,8 @@ function Home({ setIsLoading }) {
 
         const results = await Promise.all(
           movieSections.map((section) =>
-            fetchMovies(section.endpoint, language)
+            fetchMovies(section.endpoint, language, { randomPage: true })
+
               .then((data) => [section.id, Array.isArray(data) ? data : []])
               .catch(() => [section.id, []])
           )
@@ -79,9 +81,7 @@ function Home({ setIsLoading }) {
         <div className="flex items-end justify-between px-4 sm:px-0">
           <div>
             <h3 className="text-white text-xl font-extrabold">Kategoriyalar</h3>
-            <p className="text-white/50 text-sm">
-              Janrni tanlang va filmlarni ko‘ring
-            </p>
+       
           </div>
 
           <Link
@@ -94,15 +94,9 @@ function Home({ setIsLoading }) {
 
         <div className="mt-4 px-4 sm:px-0">
           <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
-            {genresLoading ? (
-              Array.from({ length: 10 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="shrink-0 h-10 w-28 rounded-full bg-white/10 border border-white/10 animate-pulse"
-                />
-              ))
-            ) : (
-              genres.map((g) => (
+  
+            
+             { genres.map((g) => (
                 <Link
                   key={g.id}
                   to={`/genre/${g.id}`}
@@ -116,7 +110,7 @@ function Home({ setIsLoading }) {
                   {g.name}
                 </Link>
               ))
-            )}
+            }
 
             {!genresLoading && genres.length === 0 && (
               <div className="text-white/60 text-sm py-2">
@@ -126,16 +120,8 @@ function Home({ setIsLoading }) {
           </div>
         </div>
 
-        {/* scrollbar hide */}
-        <style jsx>{`
-          .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
+
+  
       </div>
 
       {/* Sections */}
