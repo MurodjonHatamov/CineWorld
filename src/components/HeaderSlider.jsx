@@ -19,7 +19,7 @@ function HeaderSlider() {
   useEffect(() => {
     fetchMovies("/trending/movie/week",language).then(data => setSlides(data));
   }, [language]);
-console.log(slides);
+
 
   return (
     <div className="relative mt-20 rounded-2xl overflow-hidden">

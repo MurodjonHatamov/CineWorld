@@ -1,17 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 
-function Loader({ isLoading }) {
+function Loader({ isLoading, setIsLoading }) {
+
+
   if (!isLoading) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-14 h-14 border-4 border-white/10 border-t-white rounded-full animate-spin" />
-        <p className="text-white/70 text-sm tracking-widest animate-pulse">
-          LOADING
-        </p>
+  <div className="fixed inset-0 bg-gradient-to-br from-gray-900 to-gray-950 z-50 flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-gray-800 border-t-blue-500 rounded-full animate-spin"></div>
       </div>
-    </div>
   );
 }
 
