@@ -6,7 +6,7 @@ import 'swiper/css';
 import { Link } from 'react-router-dom';
 import { MdNavigateNext, MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from 'react-icons/md';
 
-function SwiperCard({title,movies,type,sectionId}) {
+function SwiperCard({title,movies=[],type,sectionId}) {
 
 
 
@@ -21,6 +21,12 @@ function SwiperCard({title,movies,type,sectionId}) {
     if (swiperRef.current) swiperRef.current.swiper.slidePrev();
   };
 
+  const hasMovies= Array.isArray(movies) && movies.length > 0;
+
+  // Katta ekranda 4 ta ko‘rinadi, loop uchun kamida 6 bo‘lsa yaxshi (clones muammo bermaydi)
+  const shouldLoop = movies.length >= 6;
+
+
   return (
     <div className="mb-20 max-sm:mb-8 ">
       {/* Glass header */}
@@ -28,68 +34,61 @@ function SwiperCard({title,movies,type,sectionId}) {
         <div className="flex items-center justify-between  ">
           <div>
           
-            <h2 className='text-2xl font-bold text-white max-sm:text-[16px]'>
+            <h2 className='text-2xl font-extrabold text-white max-sm:text-[16px]'>
            {title}
             </h2>
           </div>
           
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 max-sm:hidden">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 hidden sm:flex">
               <button 
                 onClick={handlePrev}
-                className="w-10 h-10 rounded-full bg-gray-800/50 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 border border-gray-700   cursor-pointer"
+                className="iconBtn"
               >
-                <MdOutlineKeyboardArrowLeft className="text-2xl" />
+                <MdOutlineKeyboardArrowLeft className="text-xl" />
               </button>
               <button 
                 onClick={handleNext}
-                className="w-10 h-10 rounded-full bg-gray-800/50 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 border border-gray-700   cursor-pointer"
+                className="iconBtn"
               >
-                <MdOutlineKeyboardArrowRight className="text-2xl" />
+                <MdOutlineKeyboardArrowRight className="text-xl" />
               </button>
             </div>
             
-            <button className='group flex items-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-gray-800 backdrop-blur-sm rounded-xl max-sm:px-3 max-sm:py-1.5 '>
-              <Link to={`/section/${type}/${sectionId}`} className='flex items-center gap-2 text-base font-medium '>
-                Batafsil
-                <MdNavigateNext className="text-xl transform group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </button>
+            <Link
+              to={`/section/${type}/${sectionId}`}
+              className="
+            button
+              "
+              title="Batafsil"
+            >
+              Batafsil
+              <MdNavigateNext className="text-xl" />
+            </Link>
           </div>
         </div>
       </div>
 
 
 {
-  movies.length > 0 ? <>
+  hasMovies ? <>
         <Swiper
             ref={swiperRef}
-            spaceBetween={16}  /* Mobile uchun kichikroq oralik */
-            loop={movies.length > 4}  /* Faqat 4+ film bo'lsa loop qil */
-            slidesPerView={2}  /* Mobile: 2 ta */
+            spaceBetween={14}  
+            loop={shouldLoop} 
+            slidesPerView={2}  
             breakpoints={{
-              640: { 
-                slidesPerView: 2,
-                spaceBetween: 20
-              },
-              768: { 
-                slidesPerView: 3,
-                spaceBetween: 20
-              },
-              1024: { 
-                slidesPerView: 3,
-                spaceBetween: 24
-              },
-              1280: { 
-                slidesPerView: 4,
-                spaceBetween: 24
-              }
+              640: { slidesPerView: 2, spaceBetween: 18 },
+              768: { slidesPerView: 3, spaceBetween: 20 },
+              1024: { slidesPerView: 3, spaceBetween: 24 },
+              1280: { slidesPerView: 4, spaceBetween: 24 },
             }}
         autoplay={{
-          delay: 2000,
+          delay: 2200,
           disableOnInteraction: false,
+          pauseOnMouseEnter: true,
         }}
-        speed={800}
+        speed={850}
         modules={[Autoplay]}
         className="swiper-glass"
       >
@@ -101,10 +100,18 @@ function SwiperCard({title,movies,type,sectionId}) {
   </SwiperSlide>
 ))}
 
+
       </Swiper>
-  </>: <div className=" bg-gray-800 p-3 rounded-2xl">
-  <h2 className='text-white text-center text-1xl'>Barcha  {title+"ni"} ko'rmoqchi bolsengiz Batafsil tugmasini bosing</h2>
-  </div>
+  </>:       <div className="px-4 sm:px-6">
+          <div className="rounded-2xl bg-white/5 border border-white/10 p-5 text-center">
+            <h2 className="text-white font-semibold">
+              {title} hozircha topilmadi
+            </h2>
+            <p className="text-white/60 text-sm mt-2">
+              Barchasini ko‘rish uchun <span className="text-white">Batafsil</span> tugmasini bosing.
+            </p>
+          </div>
+        </div>
 }
       {/* Swiper with ref */}
 

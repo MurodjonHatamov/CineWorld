@@ -146,7 +146,9 @@ navigation(`/search?q=${encodeURIComponent(value)}`);
                   <div className="px-4 py-3 flex items-center justify-between border-b border-white/10">
                     <p className="text-white font-semibold">Genres</p>
                     <button
-                      onClick={() => navigation("/categories")}
+                      onClick={() => {navigation("/categories")
+                        setMenuCategory(false)
+                      }}
                       className="text-xs text-white/70 hover:text-white underline"
                     >
                       Barchasi
@@ -156,6 +158,9 @@ navigation(`/search?q=${encodeURIComponent(value)}`);
                   <div className="max-h-80 overflow-auto scrollbar-hide p-2">
                     {genres.map((genre) => (
                       <Link
+                      onClick={()=>{
+                        setMenuCategory(false)
+                      }}
                         to={`/genre/${genre.id}`}
                         className="
                       block  text-white/80

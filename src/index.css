@@ -17,6 +17,20 @@ body {
 .iconBtn{
     @apply p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white transition cursor-pointer; 
 }
+
+
+
+.button{
+  @apply inline-flex items-center gap-2
+  px-4 py-2.5 rounded-xl
+  bg-white text-black font-semibold
+  hover:bg-white/90 transition
+  active:scale-[0.98]
+  max-sm:px-3 max-sm:py-2;
+
+}
+
+
 .textBtn{
     @apply           cursor-pointer       px-3 py-2 rounded-xl text-sm
     bg-white/5 border border-white/10
@@ -25,6 +39,7 @@ body {
 ;
 
 }
+
 .container{
     @apply max-w-7xl mx-auto mt-2
  ;
@@ -43,22 +58,13 @@ body {
 
 
 
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes spin-reverse {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
-}
-
-.animate-spin-slow {
-  animation: spin-slow 2s linear infinite;
-}
-
-.animate-spin-reverse {
-  animation: spin-reverse 1.5s linear infinite;
+@keyframes loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
 }
 
 
