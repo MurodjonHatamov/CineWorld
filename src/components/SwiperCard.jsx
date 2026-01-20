@@ -78,12 +78,12 @@ function SwiperCard({title,movies=[],type,sectionId}) {
             spaceBetween={14}  
             loop={shouldLoop} 
             slidesPerView={2}
-            centeredSlides={true}
+            
             breakpoints={{
-              640: { slidesPerView: 2, spaceBetween: 30 },
-              768: { slidesPerView: 3, spaceBetween: 20 },
-              1024: { slidesPerView: 6, spaceBetween: 30 },
-              1280: { slidesPerView: 6, spaceBetween: 30 },
+              640: { slidesPerView: 2, spaceBetween: 30,centeredSlides: false },
+              768: { slidesPerView: 3, spaceBetween: 20 ,centeredSlides: true},
+              1024: { slidesPerView: 6, spaceBetween: 30,centeredSlides: true },
+              1280: { slidesPerView: 6, spaceBetween: 30,centeredSlides: true },
             }}
         autoplay={{
           delay: 2200,
