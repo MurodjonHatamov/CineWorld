@@ -6,22 +6,23 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/effect-fade";
 import "swiper/css/parallax";
-import { FaStar } from "react-icons/fa";
-import { MdNavigateNext } from "react-icons/md";
-import { Link } from "react-router-dom";
+
 import { fetchMovies } from "../pages/server/api";
 import { useLanguage } from "../pages/LanguageContext";
+import { Link } from "react-router-dom";
+import { MdNavigateNext } from "react-icons/md";
 
 const IMAGE_ORIGINAL = "https://image.tmdb.org/t/p/original";
 const FALLBACK_BG = "/imgs/img.webp"; // sening fallback
-
+const IMG_BASE = "https://image.tmdb.org/t/p/w500";
 function HeaderSlider() {
   const { language } = useLanguage();
   const [slides, setSlides] = useState([]); // ✅ [''] emas
+console.log(slides);
 
   useEffect(() => {
     fetchMovies("/trending/movie/week", language).then((data) => {
-      setSlides(Array.isArray(data) ? data.slice(0, 10) : []);
+      setSlides(data);
     });
   }, [language]);
 
@@ -29,144 +30,87 @@ function HeaderSlider() {
 
   return (
     <div className="relative mt-20 rounded-2xl overflow-hidden">
-      <Swiper
-        spaceBetween={0}
-        centeredSlides
-        loop={slides.length > 1}
-        speed={1000}
-        parallax
-        effect="fade"
-        fadeEffect={{ crossFade: true }}
+
+<div className="max-w-7xl m-auto">
+<Swiper
+        spaceBetween={30}
+        centeredSlides={true}
         autoplay={{
-          delay: 3000,
+          delay: 2500,
           disableOnInteraction: false,
-          pauseOnMouseEnter: true,
         }}
         pagination={{
-          clickable: true,
+              clickable: true,
+
           dynamicBullets: true,
-          renderBullet: function (index, className) {
-            return `<span class="${className} !w-12 !h-1 !rounded-full !bg-gray-600 hover:!bg-blue-500 !mx-1 !transition-all !duration-300"></span>`;
-          },
-        }}
-        navigation={{
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        }}
-        modules={[Autoplay, Pagination, Navigation, EffectFade, Parallax]}
-        className="header-slider"
+        }} modules={[Pagination]}
+        className="mySwiper"
       >
-        {slides.map((slide) => {
-          const title = slide.title || slide.name || "Nomsiz";
-          const backdrop = slide.backdrop_path
-            ? `${IMAGE_ORIGINAL}${slide.backdrop_path}`
-            : FALLBACK_BG;
-
-          return (
-            <SwiperSlide key={slide.id}>
-              <div className="relative h-[500px] md:h-[550px] max-sm:h-[300px] rounded-2xl overflow-hidden group">
-                {/* ✅ Background (bitta) */}
+{
+  slides.map((item) => (
+    <SwiperSlide key={item.id}>
+ <div className="relative h-[420px] md:h-[520px] cursor-grabbing
+  ">
+                {/* background */}
                 <div
-                  className="absolute inset-0 swiper-parallax-bg"
-                  data-swiper-parallax="2%"
-                  style={{
-                    backgroundImage: `url(${backdrop})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                  }}
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${item.backdrop_path ? `${IMAGE_ORIGINAL}${item.backdrop_path}` : FALLBACK_BG})` }}
                 />
-
-                {/* overlays */}
-                <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-black/55" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-                {/* Mobile text */}
-                <div className="absolute bottom-6 left-5 right-5 text-white sm:hidden">
-                  <h2 className="text-2xl font-bold line-clamp-1">{title}</h2>
-                  <p className="mt-2 text-sm line-clamp-2 mb-3 text-white/80">
-                    {slide.overview || "Tavsif mavjud emas."}
-                  </p>
+                {/* content */}
+                <div className="relative h-full px-4 sm:px-8 md:px-12 flex items-center">
+                  <div className="  pl-6 w-full flex items-center gap-6 md:gap-10">
+                    {/* left text */}
+                    <div className="flex-1 max-w-2xl">
+                      
 
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center space-x-2 bg-gray-900/80 backdrop-blur-sm px-3 py-2 rounded-xl">
-                      <FaStar className="text-yellow-400 text-lg" />
-                      <span className="text-[15px] font-bold text-white">
-                        {Math.round(slide.vote_average || 0)}
-                      </span>
-                      <span className="text-gray-400">/10</span>
-                    </div>
-
-                    <Link
-                      to={`/movie/${slide.id}`}
-                      className="px-3 py-[10px] bg-gray-900/80 backdrop-blur-sm text-white font-bold rounded-xl inline-flex items-center gap-1"
-                    >
-                      <span className="text-sm">Ko'proq</span>
-                      <MdNavigateNext className="text-lg" />
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Desktop content */}
-                <div className="relative h-full flex items-center px-4 sm:px-8 md:px-16 lg:px-24">
-                  <div className="max-w-4xl">
-                    <div
-                      className="swiper-parallax max-sm:hidden"
-                      data-swiper-parallax="-100"
-                      data-swiper-parallax-duration="700"
-                    >
-                      <h2
-                        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight"
-                        data-swiper-parallax="-200"
-                      >
-                        {title}
+                      <h2 className="    text-white font-extrabold text-3xl sm:text-4xl md:text-5xl
+    leading-tight line-clamp-2
+    animate-slideDown">
+                        {item.title}
                       </h2>
 
-                      <p
-                        data-swiper-parallax="-250"
-                        className="mb-4 text-white/80 max-w-2xl line-clamp-3"
-                      >
-                        {slide.overview || "Tavsif mavjud emas."}
+                      <p className="text-white/75 mt-3 text-sm sm:text-base leading-relaxed line-clamp-3">
+                        {item.overview || "Tavsif mavjud emas."}
                       </p>
 
-                      <div
-                        className="flex flex-wrap items-center gap-4"
-                        data-swiper-parallax="-400"
-                      >
-                        <div className="flex items-center space-x-2 bg-gray-900/70 backdrop-blur-sm px-4 py-2 rounded-xl">
-                          <FaStar className="text-yellow-400 text-lg" />
-                          <span className="text-2xl font-bold text-white">
-                            {Math.round(slide.vote_average || 0)}
-                          </span>
-                          <span className="text-gray-400">/10</span>
-                        </div>
-
+                      <div className="mt-6">
                         <Link
-                          to={`/movie/${slide.id}`}
-                          className="group px-6 sm:px-8 py-3 bg-gray-900/70 backdrop-blur-sm text-white font-bold rounded-xl hover:bg-gray-800/70 border border-gray-700 hover:border-gray-600 transition-all duration-300 inline-flex items-center gap-2"
+                          to={`/movie/${item.id}`}
+                          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition active:scale-[0.98]"
                         >
-                          <span className="text-sm sm:text-base">Ko'proq ma'lumot</span>
-                          <MdNavigateNext className="text-lg group-hover:translate-x-1 transition-transform" />
+                          Ko'proq ma'lumot <MdNavigateNext className="text-lg" />
                         </Link>
+                      </div>
+                    </div>
+
+                    {/* right poster */}
+                    <div className="hidden md:block w-72 shrink-0">
+                      <div className="rounded-2xl overflow-hidden ring-1 ring-white/10 shadow-2xl">
+                        <img
+                          src={item.poster_path ? IMG_BASE + item.poster_path : FALLBACK_BG}
+                          alt={item.title}
+                          className="w-full h-[400px] object-cover"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = FALLBACK_POSTER;
+                          }}
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </SwiperSlide>
-          );
-        })}
-
-        {/* Navigation */}
-        <div className="swiper-button-prev overflow-hidden md:!flex !w-10 !h-10 !p-2 !bg-gray-900/70 !backdrop-blur-sm !rounded-full !left-6 !text-white hover:!bg-gray-800/70 !border !border-gray-700 after:!text-xl after:!font-bold"></div>
-        <div className="swiper-button-next !hidden md:!flex !w-10 !h-10 !p-2 !bg-gray-900/70 !backdrop-blur-sm !rounded-full !right-6 !text-white hover:!bg-gray-800/70 !border !border-gray-700 after:!text-xl after:!font-bold"></div>
-
-        <div className="swiper-pagination !bottom-6"></div>
+    </SwiperSlide>
+  ))
+}
+ 
       </Swiper>
-
-      {/* CSS */}
-     
+</div>
     </div>
   );
 }

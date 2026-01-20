@@ -10,7 +10,7 @@ function MovieCard({ movie }) {
   const title = movie.title || movie.name || "Nomsiz";
   const hasPoster = Boolean(movie.poster_path);
   const poster = hasPoster ? `${IMG_BASE}${movie.poster_path}` : null;
-
+const releaseDate = movie.release_date || movie.first_air_date || "N/A";
   const rating =
     typeof movie.vote_average === "number"
       ? Math.round(movie.vote_average)
@@ -21,10 +21,12 @@ function MovieCard({ movie }) {
       <div
         className="
           rounded-2xl overflow-hidden relative group cursor-pointer
-          min-w-[260px]
-          max-sm:min-w-[100px]
-          md:min-w-[220px]
-          lg:min-w-[260px]
+          min-w-[200px]
+          max-w-[220px]
+          max-sm:min-w-[115px]
+          max-sm:max-w-[180px]
+          md:min-w-[180px]
+          lg:min-w-[200px]
         "
       >
         {/* ⭐ Rating */}
@@ -80,8 +82,8 @@ function MovieCard({ movie }) {
           <h3 className="text-lg font-bold max-sm:text-sm line-clamp-1">
             {title}
           </h3>
-          <p className="text-sm text-gray-300 underline">
-            Ko‘rish
+          <p className="text-sm text-gray-300 ">
+            {releaseDate}
           </p>
         </div>
       </div>

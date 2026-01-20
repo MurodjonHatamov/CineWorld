@@ -19,6 +19,11 @@ import SearchPage from './pages/SearchPage';
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 const [isMenuOpen,setIsMenuOpen]=useState(false)
+
+const test=()=>{
+  
+}
+
   useEffect(()=>{
     fetchCategory()
     
@@ -26,6 +31,8 @@ const [isMenuOpen,setIsMenuOpen]=useState(false)
 
 
   
+
+
 
   return (
     <>  

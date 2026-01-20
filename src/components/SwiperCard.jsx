@@ -74,21 +74,23 @@ function SwiperCard({title,movies=[],type,sectionId}) {
   hasMovies ? <>
         <Swiper
             ref={swiperRef}
+            
             spaceBetween={14}  
             loop={shouldLoop} 
-            slidesPerView={2}  
+            slidesPerView={3}
+            centeredSlides={true}
             breakpoints={{
-              640: { slidesPerView: 2, spaceBetween: 18 },
+              640: { slidesPerView: 2, spaceBetween: 30 },
               768: { slidesPerView: 3, spaceBetween: 20 },
-              1024: { slidesPerView: 3, spaceBetween: 24 },
-              1280: { slidesPerView: 4, spaceBetween: 24 },
+              1024: { slidesPerView: 6, spaceBetween: 30 },
+              1280: { slidesPerView: 6, spaceBetween: 30 },
             }}
         autoplay={{
           delay: 2200,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
-        speed={850}
+        speed={1000}
         modules={[Autoplay]}
         className="swiper-glass"
       >
