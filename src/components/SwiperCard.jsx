@@ -85,11 +85,7 @@ function SwiperCard({title,movies=[],type,sectionId}) {
               1024: { slidesPerView: 6, spaceBetween: 30,centeredSlides: true },
               1280: { slidesPerView: 6, spaceBetween: 30,centeredSlides: true },
             }}
-        autoplay={{
-          delay: 2200,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: true,
-        }}
+     
         speed={1000}
         modules={[Autoplay]}
         className="swiper-glass"
