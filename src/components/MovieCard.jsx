@@ -23,7 +23,7 @@ const releaseDate = movie.release_date || movie.first_air_date || "N/A";
           rounded-2xl overflow-hidden relative group cursor-pointer
           min-w-[200px]
           max-w-[220px]
-          max-sm:min-w-[115px]
+          max-sm:min-w-[160px]
           max-sm:max-w-[180px]
           md:min-w-[180px]
           lg:min-w-[200px]

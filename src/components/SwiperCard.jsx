@@ -77,7 +77,7 @@ function SwiperCard({title,movies=[],type,sectionId}) {
             
             spaceBetween={14}  
             loop={shouldLoop} 
-            slidesPerView={3}
+            slidesPerView={2}
             centeredSlides={true}
             breakpoints={{
               640: { slidesPerView: 2, spaceBetween: 30 },
