@@ -593,7 +593,7 @@ function MovieDetail() {
               <h2 className="text-2xl font-bold">O‘xshash filmlar</h2>
             </div>
 
-            <div className="flex gap-4 overflow-x-auto pb-3 scrollbar-hide">
+            <div className="flex gap-4 overflow-x-auto pb-3 scrollbar-hide justify-center">
               {similar.slice(0, 14).map((m) => (
                 <MovieCard key={m.id} movie={m} />
               ))}
