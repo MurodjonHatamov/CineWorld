@@ -20,9 +20,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 const [isMenuOpen,setIsMenuOpen]=useState(false)
 
-const test=()=>{
-  
-}
 
   useEffect(()=>{
     fetchCategory()
@@ -39,7 +36,7 @@ const test=()=>{
     <BrowserRouter>
 <LanguageProvider>
 <Navbar      isMenuOpen={isMenuOpen}     setIsMenuOpen={setIsMenuOpen}          setIsLoading={setIsLoading}/>
-<Sidebar      setIsMenuOpen={setIsMenuOpen}     isMenuOpen={isMenuOpen}          isLoading={isLoading} />
+<Sidebar      setIsMenuOpen={setIsMenuOpen} setIsLoading={setIsLoading}     isMenuOpen={isMenuOpen}          isLoading={isLoading} />
     <Loader isLoading={isLoading} setIsLoading={setIsLoading} />
     <Routes>
       <Route path="/" element={<Home  setIsLoading={setIsLoading}/>}/>

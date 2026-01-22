@@ -5,7 +5,7 @@ import { fetchCategory } from '../pages/server/api';
 import { useLanguage } from '../pages/LanguageContext';
 import { IoMdClose } from 'react-icons/io';
 
-function Sidebar({   isMenuOpen, setIsMenuOpen}) {
+function Sidebar({   isMenuOpen, setIsMenuOpen,setIsLoading}) {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const [genres, setGenres] = useState([]);
@@ -19,11 +19,19 @@ function Sidebar({   isMenuOpen, setIsMenuOpen}) {
   // Fetch genres
   useEffect(() => {
     const getGenres = async () => {
-      const data = await fetchCategory(language);
-      setGenres(data);
+      setIsLoading(true);
+      const data = await fetchCategory(language,"movie");
+      const tvData = await fetchCategory(language,"tv");
+      const allData = [...data, ...tvData].filter(
+        (genre, index, self) =>
+          index === self.findIndex(g => g.id === genre.id)
+      );
+      setGenres(allData);
+      setIsLoading(false);
     };
     getGenres();
   }, [language]);
+
 
   const handleNavigation = (path) => {
     navigate(path);

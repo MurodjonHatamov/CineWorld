@@ -38,11 +38,15 @@ function Categories({setIsLoading}) {
 
 useEffect(() => {
   const getGenres = async () => {
-setIsLoading(true)
-    const data = await fetchCategory(language);
-    setGenres(data);
-setIsLoading(false)
-    
+    setIsLoading(true);
+    const data = await fetchCategory(language,"movie");
+    const tvData = await fetchCategory(language,"tv");
+    const allData = [...data, ...tvData].filter(
+      (genre, index, self) =>
+        index === self.findIndex(g => g.id === genre.id)
+    );
+    setGenres(allData);
+    setIsLoading(false);
   };
   getGenres();
 }, [language]);
