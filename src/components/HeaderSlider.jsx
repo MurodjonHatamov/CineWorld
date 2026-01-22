@@ -49,14 +49,14 @@ function HeaderSlider() {
 {
   slides.map((item) => (
     <SwiperSlide key={item.id}>
- <div className="relative h-[420px] md:h-[520px] cursor-grabbing
+ <div className="relative h-[420px] md:h-[520px] cursor-grabbing max-sm:h-[250px]
   ">
                 {/* background */}
                 <div
                   className="absolute inset-0 bg-cover bg-center"
                   style={{ backgroundImage: `url(${item.backdrop_path ? `${IMAGE_ORIGINAL}${item.backdrop_path}` : FALLBACK_BG})` }}
                 />
-                <div className="absolute inset-0 bg-black/55" />
+                <div className="absolute inset-0 bg-black/5   sm:bg-black/55" />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
@@ -67,7 +67,7 @@ function HeaderSlider() {
                     <div className="flex-1 max-w-2xl">
                       
 
-                      <h2 className="    text-white font-extrabold text-3xl sm:text-4xl md:text-5xl
+                      <h2 className="    text-white font-extrabold text-2xl sm:text-4xl md:text-5xl
     leading-tight line-clamp-2
     animate-slideDown">
                         {item.title}
@@ -80,7 +80,7 @@ function HeaderSlider() {
                       <div className="mt-6">
                         <Link
                           to={`/movie/${item.id}`}
-                          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition active:scale-[0.98]"
+                          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition active:scale-[0.98] max-sm:px-4 max-sm:py-2 max-sm:text-sm"
                         >
                           Ko'proq ma'lumot <MdNavigateNext className="text-lg" />
                         </Link>

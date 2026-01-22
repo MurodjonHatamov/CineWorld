@@ -113,21 +113,78 @@ export const fetchCategory = async (language="en-US",type = "movie") => {
   
 
   // ckategorya bo'yicha malumot olish
-  export const fetchByGenre = async (type, genreId,language="en-US") => {
+  // export const fetchByGenre = async (type, genreId,language="en-US") => {
+  //   try {
+  //     const endpoint =
+  //       type === "movie"
+  //         ? `/discover/movie?with_genres=${genreId}`
+  //         : `/discover/tv?with_genres=${genreId}`; 
+  
+  //     const res = await fetch(
+  //       `${BASE_URL}${endpoint}&api_key=${API_KEY}&language=${language}sort_by=popularity.desc`
+  //     );
+  //     const data = await res.json();
+  //     return data.results;
+  //   } catch (err) {
+  //     console.error("Genre fetch error:", err);
+  //     return [];
+  //   }
+  // };
+  export const fetchByGenre = async (
+    type,         // "movie" | "tv"
+    genreId,
+    language = "en-US",
+    options = {}
+  ) => {
     try {
+      const {
+        page = 1,
+        sort_by = "popularity.desc",
+        include_adult = false,
+  
+        year,              // movie uchun: 2024
+        first_air_year,    // tv uchun: 2024
+        vote_gte,          // min rating: 7
+        original_language, // masalan: "en", "ru", "ko"
+      } = options;
+  
       const endpoint =
         type === "movie"
           ? `/discover/movie?with_genres=${genreId}`
-          : `/discover/tv?with_genres=${genreId}`; 
+          : `/discover/tv?with_genres=${genreId}`;
   
-      const res = await fetch(
-        `${BASE_URL}${endpoint}&api_key=${API_KEY}&language=${language}`
-      );
+      const params = new URLSearchParams();
+      params.set("api_key", API_KEY);
+      params.set("language", language);
+      params.set("page", String(page));
+      params.set("sort_by", sort_by);
+      params.set("include_adult", include_adult ? "true" : "false");
+  
+      // min rating
+      if (vote_gte !== undefined && vote_gte !== null && vote_gte !== "")
+        params.set("vote_average.gte", String(vote_gte));
+  
+      // original language (ISO 639-1)
+      if (original_language) params.set("with_original_language", original_language);
+  
+      // year filters
+      if (type === "movie" && year) params.set("year", String(year));
+      if (type === "tv" && first_air_year) params.set("first_air_date_year", String(first_air_year));
+  
+      const url = `${BASE_URL}${endpoint}&${params.toString()}`;
+  
+      const res = await fetch(url);
       const data = await res.json();
-      return data.results;
+  
+      return {
+        results: data.results || [],
+        page: data.page || page,
+        total_pages: data.total_pages || 1,
+        total_results: data.total_results || 0,
+      };
     } catch (err) {
       console.error("Genre fetch error:", err);
-      return [];
+      return { results: [], page: 1, total_pages: 1, total_results: 0 };
     }
   };
   
