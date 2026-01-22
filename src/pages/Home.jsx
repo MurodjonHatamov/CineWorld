@@ -46,28 +46,19 @@ function Home({ setIsLoading }) {
     };
   }, [language, setIsLoading]);
 
-  // Genres (categories)
   useEffect(() => {
-    let mounted = true;
-
-    const loadGenres = async () => {
-      try {
-        setGenresLoading(true);
-        const data = await fetchCategory(language);
-        if (!mounted) return;
-        setGenres(Array.isArray(data) ? data : []);
-      } catch {
-        if (mounted) setGenres([]);
-      } finally {
-        if (mounted) setGenresLoading(false);
-      }
+    const getGenres = async () => {
+      setIsLoading(true);
+      const data = await fetchCategory(language,"movie");
+      const tvData = await fetchCategory(language,"tv");
+      const allData = [...data, ...tvData].filter(
+        (genre, index, self) =>
+          index === self.findIndex(g => g.id === genre.id)
+      );
+      setGenres(allData.slice(0, 10));
+      setIsLoading(false);
     };
-
-    loadGenres();
-
-    return () => {
-      mounted = false;
-    };
+    getGenres();
   }, [language]);
 
   return (

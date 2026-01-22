@@ -2,8 +2,32 @@
 
 export const API_KEY = "87ea6600c90ed06f2a15fff32ae9ac23";
 export const BASE_URL = "https://api.themoviedb.org/3";
+export const movieSections = [
+  { id: 1, title: "Ommabop filmlar", endpoint: "/movie/popular" },
+  { id: 2, title: "Trenddagi filmlar", endpoint: "/trending/movie/week" },
+  { id: 3, title: "Eng yaxshi filmlar", endpoint: "/movie/top_rated" },
+  { id: 4, title: "Yangi filmlar", endpoint: "/movie/now_playing" },
+  { id: 5, title: "Yaqinda chiqadigan filmlar", endpoint: "/movie/upcoming" },
+];
+
+export const tvSections = [
+  { id: 1, title: "Ommabop seriallar", endpoint: "/tv/popular" },
+  { id: 2, title: "Trenddagi seriallar", endpoint: "/trending/tv/week" },
+  { id: 3, title: "Eng yaxshi seriallar", endpoint: "/tv/top_rated" },
+  { id: 4, title: "Bugun efirga uzatilmoqda", endpoint: "/tv/airing_today" },
+  { id: 5, title: "Hozir namoyishda", endpoint: "/tv/on_the_air" },
+];
 
 
+// src/constants/languages.js
+export const LANGUAGES = [
+{ code: "uz-UZ", label: "Uz" },
+{ code: "ru-RU", label: "Rus" },
+{ code: "en-US", label: "Eng" },
+];
+
+
+// Home and Tv
 export const fetchMovies = async (
   endpoint,
   language = "en-US",
@@ -33,10 +57,10 @@ export const fetchMovies = async (
 
 
 
-export const fetchCategory = async (language="en-US") => {
+export const fetchCategory = async (language="en-US",type = "movie") => {
     try {
       const res = await fetch(
-        `${BASE_URL}/genre/tv/list?api_key=${API_KEY}&language=${language}`
+        `${BASE_URL}/genre/${type}/list?api_key=${API_KEY}&language=${language}`
       );
   
       const data = await res.json();
@@ -83,28 +107,7 @@ export const fetchCategory = async (language="en-US") => {
   
 
 
-  export const movieSections = [
-    { id: 1, title: "Ommabop filmlar", endpoint: "/movie/popular" },
-    { id: 2, title: "Trenddagi filmlar", endpoint: "/trending/movie/week" },
-    { id: 3, title: "Eng yaxshi filmlar", endpoint: "/movie/top_rated" },
-    { id: 4, title: "Yangi filmlar", endpoint: "/movie/now_playing" },
-    { id: 5, title: "Yaqinda chiqadigan filmlar", endpoint: "/movie/upcoming" },
-  ];
 
-  export const tvSections = [
-    { id: 1, title: "Ommabop seriallar", endpoint: "/tv/popular" },
-    { id: 2, title: "Trenddagi seriallar", endpoint: "/trending/tv/week" },
-    { id: 3, title: "Eng yaxshi seriallar", endpoint: "/tv/top_rated" },
-    { id: 4, title: "Hozir namoyishda", endpoint: "/tv/on_the_air" },
-  ];
-
-
-  // src/constants/languages.js
-export const LANGUAGES = [
-  { code: "uz-UZ", label: "Uz" },
-  { code: "ru-RU", label: "Rus" },
-  { code: "en-US", label: "Eng" },
-];
 
 
   
@@ -115,7 +118,7 @@ export const LANGUAGES = [
       const endpoint =
         type === "movie"
           ? `/discover/movie?with_genres=${genreId}`
-          : `/discover/tv?with_genres=${genreId}`;
+          : `/discover/tv?with_genres=${genreId}`; 
   
       const res = await fetch(
         `${BASE_URL}${endpoint}&api_key=${API_KEY}&language=${language}`

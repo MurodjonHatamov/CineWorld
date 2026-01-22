@@ -99,16 +99,16 @@ function SwiperCard({title,movies=[],type,sectionId}) {
 
 
       </Swiper>
-  </>:       <div className="px-4 sm:px-6">
-          <div className="rounded-2xl bg-white/5 border border-white/10 p-5 text-center">
-            <h2 className="text-white font-semibold">
-              {title} hozircha topilmadi
-            </h2>
-            <p className="text-white/60 text-sm mt-2">
-              Barchasini ko‘rish uchun <span className="text-white">Batafsil</span> tugmasini bosing.
-            </p>
-          </div>
-        </div>
+  </>:     <div class=" rounded-md  p-4 flex items-center justify-center gap-3 overflow-hidden">
+  {
+    [1,2,3,4,5].map((item)=>{
+      return <div class="flex animate-pulse space-x-4">
+      <div class="w-[210px] h-[270px]  bg-white/10 rounded-lg"></div>
+   
+    </div>
+    })
+  }
+</div>
 }
       {/* Swiper with ref */}
 

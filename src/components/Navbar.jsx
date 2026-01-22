@@ -18,8 +18,13 @@ function Navbar({ setIsLoading, isMenuOpen, setIsMenuOpen }) {
   useEffect(() => {
     const getGenres = async () => {
       setIsLoading(true);
-      const data = await fetchCategory(language);
-      setGenres(data);
+      const data = await fetchCategory(language,"movie");
+      const tvData = await fetchCategory(language,"tv");
+      const allData = [...data, ...tvData].filter(
+        (genre, index, self) =>
+          index === self.findIndex(g => g.id === genre.id)
+      );
+      setGenres(allData);
       setIsLoading(false);
     };
     getGenres();
@@ -157,7 +162,7 @@ navigation(`/search?q=${encodeURIComponent(value)}`);
 
                   <div className="max-h-80 overflow-auto scrollbar-hide p-2">
                     {genres.map((genre) => (
-                      <Link
+                      <Link key={genre.id}
                       onClick={()=>{
                         setMenuCategory(false)
                       }}

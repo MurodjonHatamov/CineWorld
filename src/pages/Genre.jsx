@@ -29,6 +29,8 @@ useEffect(() => {
           data[`tv-${section.id}`] = res;
         }
       }
+ 
+  console.log(data);
   
       setItemsBySection(data);
     setIsLoading(false);
@@ -69,11 +71,14 @@ useEffect(() => {
 
     {/* MOVIE SECTIONLAR */}
 {(type === "all" || type === "movie") &&
+
   movieSections.map(section => (
+    
     <section
       key={`movie-${section.id}`}
       className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-2"
     >
+   
       <SwiperCard
         title={section.title}
         movies={itemsBySection[`movie-${section.id}`] || []}
@@ -81,7 +86,10 @@ useEffect(() => {
         sectionId={section.id} 
       />
     </section>
-))}
+))
+
+
+}
 
 {/* TV SECTIONLAR */}
 {(type === "all" || type === "tv") &&

@@ -18,7 +18,7 @@ const IMG_BASE = "https://image.tmdb.org/t/p/w500";
 function HeaderSlider() {
   const { language } = useLanguage();
   const [slides, setSlides] = useState([]); // ✅ [''] emas
-console.log(slides);
+
 
   useEffect(() => {
     fetchMovies("/trending/movie/week", language).then((data) => {

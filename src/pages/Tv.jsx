@@ -36,7 +36,7 @@ const { language } = useLanguage();
           className=" max-w-7xl mx-auto sm:px-6 lg:px-8 py-2"
         >
           <SwiperCard
-           type="tv"         // section turi
+           type="tv"         
            sectionId={section.id} 
             title={section.title}
             movies={moviesBySection[section.id] || []}
