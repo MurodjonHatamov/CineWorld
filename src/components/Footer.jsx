@@ -80,28 +80,7 @@ function Footer() {
             © {new Date().getFullYear()} CineWorld. All rights reserved.
           </p>
 
-          <div className="flex items-center gap-4 text-sm">
-            <Link
-              to="/privacy"
-              className="text-white/60 hover:text-white transition"
-            >
-              Privacy
-            </Link>
-            <span className="text-white/20">•</span>
-            <Link
-              to="/terms"
-              className="text-white/60 hover:text-white transition"
-            >
-              Terms
-            </Link>
-            <span className="text-white/20">•</span>
-            <Link
-              to="/contact"
-              className="text-white/60 hover:text-white transition"
-            >
-              Contact
-            </Link>
-          </div>
+      
         </div>
       </div>
     </footer>
