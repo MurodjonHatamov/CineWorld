@@ -11,10 +11,14 @@ function Home({ setIsLoading }) {
   const [genresLoading, setGenresLoading] = useState(true);
 
   const { language } = useLanguage();
-
+const scrollTop=()=>{
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
   // Sections (movies)
   useEffect(() => {
+    scrollTop()
 
+    
     let mounted = true;
 
     const loadSections = async () => {

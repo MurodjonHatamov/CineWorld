@@ -46,8 +46,7 @@ function HeaderSlider() {
         }} modules={[Pagination]}
         className="mySwiper"
       >
-{
-  slides.map((item) => (
+{slides ? slides.map((item) => (
     <SwiperSlide key={item.id}>
  <div className="relative h-[420px] md:h-[520px] cursor-grabbing max-sm:h-[250px]
   ">
@@ -106,7 +105,10 @@ function HeaderSlider() {
                 </div>
               </div>
     </SwiperSlide>
-  ))
+  )) : (<div class="flex animate-pulse space-x-4">
+    <div class="w-[210px] h-[270px]  bg-white/10 rounded-lg"></div>
+ 
+  </div>)
 }
  
       </Swiper>

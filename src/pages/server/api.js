@@ -230,13 +230,15 @@ export const fetchBasicMovieDetail = async (id, language = 'en-US') => {
       detail,
       cast: credits.cast.slice(0, 12), // faqat eng muhimlari
       trailer, // bitta trailer
-      similar: similar.results.slice(0,5)
+      similar: similar.results
     };
   } catch (error) {
     console.error('Error fetching movie data:', error);
     throw error;
   }
 };
+
+
 
 
 

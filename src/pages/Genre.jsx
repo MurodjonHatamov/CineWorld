@@ -261,7 +261,7 @@ function Genre({ setIsLoading }) {
             </button>
           )}
 
-          {/* all holatda xohlasang ikkala tomonni alohida “Show more” qilamiz */}
+          
         </div>
       </div>
     </div>
