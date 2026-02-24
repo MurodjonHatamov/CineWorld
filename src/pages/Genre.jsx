@@ -22,7 +22,6 @@ function Genre({ setIsLoading }) {
   const [movieState, setMovieState] = useState({ list: [], page: 1, totalPages: 1 });
   const [tvState, setTvState] = useState({ list: [], page: 1, totalPages: 1 });
 
-  const activeSort = type === "tv" ? sortByTv : sortByMovie;
 
   const buildOptions = (t, page = 1) => ({
     page,

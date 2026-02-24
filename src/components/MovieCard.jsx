@@ -7,6 +7,7 @@ const IMG_BASE = "https://image.tmdb.org/t/p/w500";
 function MovieCard({ movie }) {
   if (!movie) return null;
 
+
   const title = movie.title || movie.name || "Nomsiz";
   const hasPoster = Boolean(movie.poster_path);
   const poster = hasPoster ? `${IMG_BASE}${movie.poster_path}` : null;
@@ -16,8 +17,12 @@ const releaseDate = movie.release_date || movie.first_air_date || "N/A";
       ? Math.round(movie.vote_average)
       : null;
 
+ const isMovie = !!movie.title;
+  const type=isMovie ? "movie" : "tv"
+
+      
   return (
-    <Link to={`/movie/${movie.id}`} className="block">
+    <Link to={`detail/${type}/${movie.id}`} className="block">
       <div
         className="
           rounded-2xl overflow-hidden relative group cursor-pointer
@@ -29,7 +34,9 @@ const releaseDate = movie.release_date || movie.first_air_date || "N/A";
           lg:min-w-[200px]
         "
       >
-        {/* ⭐ Rating */}
+        {
+          movie ? <>
+          {/* ⭐ Rating */}
         {rating !== null && (
           <div className="absolute top-2 right-2 z-20 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-black/60 backdrop-blur text-white text-sm font-semibold">
             <FaStar className="text-yellow-400" />
@@ -85,7 +92,9 @@ const releaseDate = movie.release_date || movie.first_air_date || "N/A";
           <p className="text-sm text-gray-300 ">
             {releaseDate}
           </p>
-        </div>
+        </div></> :
+        <h1>salom</h1>
+        }
       </div>
     </Link>
   );

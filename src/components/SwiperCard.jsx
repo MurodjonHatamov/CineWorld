@@ -99,11 +99,11 @@ function SwiperCard({title,movies=[],type,sectionId}) {
 
 
       </Swiper>
-  </>:     <div class=" rounded-md  p-4 flex items-center justify-center gap-3 overflow-hidden">
+  </>:     <div className=" rounded-md  p-4 flex items-center justify-center gap-3 overflow-hidden">
   {
     [1,2,3,4,5].map((item)=>{
-      return <div class="flex animate-pulse space-x-4">
-      <div class="w-[210px] h-[270px]  bg-white/10 rounded-lg"></div>
+      return <div className="flex animate-pulse space-x-4">
+      <div className="w-[210px] h-[270px]  bg-white/10 rounded-lg"></div>
    
     </div>
     })

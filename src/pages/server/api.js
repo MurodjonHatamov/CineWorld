@@ -208,17 +208,27 @@ export const fetchBasicMovieDetail = async (id, language = 'en-US') => {
       detailRes,
       creditsRes,
       videosRes,
+      imagesRes,
+      keywordsRes,
+      reviewsRes,
       similarRes
     ] = await Promise.all([
       fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=${language}`),
       fetch(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}`),
       fetch(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}`),
+      fetch(`${BASE_URL}/movie/${id}/images?api_key=${API_KEY}`),
+      fetch(`${BASE_URL}/movie/${id}/keywords?api_key=${API_KEY}`),
+      fetch(`${BASE_URL}/movie/${id}/reviews?api_key=${API_KEY}&language=${language}`),
       fetch(`${BASE_URL}/movie/${id}/similar?api_key=${API_KEY}&language=${language}`)
+
     ]);
 
     const detail = await detailRes.json();
     const credits = await creditsRes.json();
     const videos = await videosRes.json();
+    const images = await imagesRes.json();
+    const keywords = await keywordsRes.json();
+    const reviews = await reviewsRes.json();
     const similar = await similarRes.json();
 
     // 🎬 Trailer tanlab olish
@@ -228,9 +238,13 @@ export const fetchBasicMovieDetail = async (id, language = 'en-US') => {
 
     return {
       detail,
-      cast: credits.cast.slice(0, 12), // faqat eng muhimlari
-      trailer, // bitta trailer
+      cast: credits.cast.slice(0, 12), 
+      trailer,
+      images: images.backdrops.slice(0, 10),
+      keywords: keywords.keywords,
+      reviews: reviews.results,
       similar: similar.results
+
     };
   } catch (error) {
     console.error('Error fetching movie data:', error);
