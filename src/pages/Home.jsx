@@ -9,46 +9,45 @@ function Home({ setIsLoading }) {
   const [moviesBySection, setMoviesBySection] = useState({});
   const [genres, setGenres] = useState([]);
   const [genresLoading, setGenresLoading] = useState(true);
+// console.log(moviesBySection);
 
   const { language } = useLanguage();
 const scrollTop=()=>{
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
   // Sections (movies)
-  useEffect(() => {
-    scrollTop()
+useEffect(() => {
+  scrollTop();
+  let mounted = true;
 
-    
-    let mounted = true;
+  const loadSections = async () => {
+    setIsLoading(true);
 
-    const loadSections = async () => {
+    movieSections.forEach(async (section) => {
       try {
-        setIsLoading(true);
-
-        const results = await Promise.all(
-          movieSections.map((section) =>
-            fetchMovies(section.endpoint, language, { randomPage: true })
-
-              .then((data) => [section.id, Array.isArray(data) ? data : []])
-              .catch(() => [section.id, []])
-          )
-        );
-
-        if (!mounted) return;
-
-        const mapped = Object.fromEntries(results);
-        setMoviesBySection(mapped);
-      } finally {
-        if (mounted) setIsLoading(false);
+        const data = await fetchMovies(section.endpoint, language, { randomPage: true });
+        
+        if (mounted) {
+        
+          setMoviesBySection((prev) => ({
+            ...prev,
+            [section.id]: Array.isArray(data) ? data : []
+          }));
+        }
+      } catch (err) {
+        console.error(`Error in ${section.id}:`, err);
       }
-    };
+    });
 
-    loadSections();
+    setIsLoading(false);
+  };
 
-    return () => {
-      mounted = false;
-    };
-  }, [language, setIsLoading]);
+  loadSections();
+  return () => { mounted = false; };
+}, [language]);
+
+
+
 
   useEffect(() => {
     const getGenres = async () => {

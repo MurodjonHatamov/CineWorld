@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { MdNavigateNext, MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from 'react-icons/md';
 
 function SwiperCard({title,movies=[],type,sectionId}) {
+// console.log(title , movies , type, sectionId);
 
 
 
@@ -21,7 +22,9 @@ function SwiperCard({title,movies=[],type,sectionId}) {
     if (swiperRef.current) swiperRef.current.swiper.slidePrev();
   };
 
+
   const hasMovies= Array.isArray(movies) && movies.length > 0;
+
 
   // Katta ekranda 4 ta ko‘rinadi, loop uchun kamida 6 bo‘lsa yaxshi (clones muammo bermaydi)
   const shouldLoop = movies.length >= 6;
@@ -74,11 +77,9 @@ function SwiperCard({title,movies=[],type,sectionId}) {
   hasMovies ? <>
         <Swiper
             ref={swiperRef}
-            
             spaceBetween={14}  
             loop={shouldLoop} 
             slidesPerView={2}
-            
             breakpoints={{
               640: { slidesPerView: 2, spaceBetween: 30,centeredSlides: false },
               768: { slidesPerView: 3, spaceBetween: 20 ,centeredSlides: true},

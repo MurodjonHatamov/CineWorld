@@ -1,6 +1,11 @@
 // api.js
 
 export const API_KEY = "87ea6600c90ed06f2a15fff32ae9ac23";
+
+
+
+
+
 export const BASE_URL = "https://api.themoviedb.org/3";
 export const movieSections = [
   { id: 1, title: "Ommabop filmlar", endpoint: "/movie/popular" },
@@ -33,22 +38,18 @@ export const fetchMovies = async (
   language = "en-US",
   options = {}
 ) => {
-  try {
     const randomPage =
       options.randomPage
         ? Math.floor(Math.random() * (options.maxPage || 10)) + 1
         : options.page || 1;
-
-    const res = await fetch(
-      `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=${language}&page=${randomPage}`
-    );
-
-    const data = await res.json();
-    return data.results || [];
-  } catch (err) {
-    console.error("API error:", err);
-    return [];
-  }
+try{
+  const response = await fetch(`${BASE_URL}${endpoint}?api_key=${API_KEY}&language=${language}&page=${randomPage}`);
+  const data = await response.json();
+  return data.results || [];
+}catch(e){
+  console.error("Error fetching movies:", e);
+  return [];
+}
 };
 
   
@@ -56,22 +57,19 @@ export const fetchMovies = async (
 
 
 
-
+// Bu kategoriya bo'yicha malumot olish
 export const fetchCategory = async (language="en-US",type = "movie") => {
     try {
       const res = await fetch(
         `${BASE_URL}/genre/${type}/list?api_key=${API_KEY}&language=${language}`
       );
-  
       const data = await res.json();
-  
-  
       return data.genres; 
     } catch (err) {
-      console.error("Category API error:", err);
       return [];
     }
   };
+  
   
 
   export const fetchBySection = async (type, sectionId, page = 1,language="en-US") => {
@@ -277,5 +275,7 @@ export const searchMulti = async (query, language = "en-US", page = 1) => {
     return { results: [], page: 1, total_pages: 1, total_results: 0 };
   }
 };
+
+
 
 

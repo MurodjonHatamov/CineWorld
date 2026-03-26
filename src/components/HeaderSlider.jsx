@@ -26,7 +26,7 @@ function HeaderSlider() {
     });
   }, [language]);
 
-  if (!slides.length) return null;
+  if (!slides?.length) return null;
 
   return (
     <div className="relative mt-20 rounded-2xl overflow-hidden">
