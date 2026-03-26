@@ -35,10 +35,9 @@ useEffect(() => {
           }));
         }
       } catch (err) {
-        console.error(`Error in ${section.id}:`, err);
+  return [];
       }
     });
-
     setIsLoading(false);
   };
 
@@ -129,6 +128,7 @@ useEffect(() => {
             movies={moviesBySection[section.id] || []}
             type="movie"
             sectionId={section.id}
+    
           />
         </section>
       ))}
