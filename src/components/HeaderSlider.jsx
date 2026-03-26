@@ -154,25 +154,7 @@ function HeaderSlider() {
       </Swiper>
 
       {/* Pagination Style Overrides */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        .header-swiper .swiper-pagination-bullet {
-          background: white !important;
-          opacity: 0.3;
-          width: 8px;
-          height: 8px;
-        }
-        .header-swiper .swiper-pagination-bullet-active {
-          opacity: 1;
-          width: 24px;
-          border-radius: 4px;
-          background: #dc2626 !important;
-        }
-        @media (max-width: 768px) {
-          .header-swiper .swiper-pagination {
-            bottom: 5px !important;
-          }
-        }
-      `}} />
+    
     </div>
   );
 }
