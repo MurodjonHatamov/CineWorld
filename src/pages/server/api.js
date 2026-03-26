@@ -200,7 +200,7 @@ export const fetchCategory = async (language="en-US",type = "movie") => {
 
 
 
-export const fetchBasicMovieDetail = async (id, language = 'en-US') => {
+export const fetchBasicMovieDetail = async (id, link, language = 'en-US') => {
   try {
     const [
       detailRes,
@@ -211,13 +211,13 @@ export const fetchBasicMovieDetail = async (id, language = 'en-US') => {
       reviewsRes,
       similarRes
     ] = await Promise.all([
-      fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=${language}`),
-      fetch(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}`),
-      fetch(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}`),
-      fetch(`${BASE_URL}/movie/${id}/images?api_key=${API_KEY}`),
-      fetch(`${BASE_URL}/movie/${id}/keywords?api_key=${API_KEY}`),
-      fetch(`${BASE_URL}/movie/${id}/reviews?api_key=${API_KEY}&language=${language}`),
-      fetch(`${BASE_URL}/movie/${id}/similar?api_key=${API_KEY}&language=${language}`)
+      fetch(`${BASE_URL}/${link}/${id}?api_key=${API_KEY}&language=${language}`),
+      fetch(`${BASE_URL}/${link}/${id}/credits?api_key=${API_KEY}`),
+      fetch(`${BASE_URL}/${link}/${id}/videos?api_key=${API_KEY}`),
+      fetch(`${BASE_URL}/${link}/${id}/images?api_key=${API_KEY}`),
+      fetch(`${BASE_URL}/${link}/${id}/keywords?api_key=${API_KEY}`),
+      fetch(`${BASE_URL}/${link}/${id}/reviews?api_key=${API_KEY}&language=${language}`),
+      fetch(`${BASE_URL}/${link}/${id}/similar?api_key=${API_KEY}&language=${language}`)
 
     ]);
 

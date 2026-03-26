@@ -64,11 +64,16 @@ function SwiperCard({ title, movies = [], type, sectionId, isLoading }) {
           spaceBetween={14}
           loop={shouldLoop}
           slidesPerView={2}
+             
+                
+                
+                          watchSlidesProgress={true}
+
           breakpoints={{
-            640: { slidesPerView: 2, spaceBetween: 20 },
-            768: { slidesPerView: 3, spaceBetween: 20 },
-            1024: { slidesPerView: 6, spaceBetween: 30 },
-            1280: { slidesPerView: 6, spaceBetween: 30 },
+            640: { slidesPerView: 2, spaceBetween: 20,speed: 500, },
+            768: { slidesPerView: 3, spaceBetween: 20,  speed: 500, },
+            1024: { slidesPerView: 6, spaceBetween: 30,  speed: 500, },
+            1280: { slidesPerView: 6, spaceBetween: 30,  speed: 500, },
           }}
           modules={[Autoplay]}
           className="swiper-glass px-6"

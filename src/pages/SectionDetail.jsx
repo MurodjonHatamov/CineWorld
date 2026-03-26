@@ -28,22 +28,27 @@ function SectionDetail({ setIsLoading }) {
       const data = await fetchBySection(type, id, pageToLoad, language);
 
       const results = Array.isArray(data?.results) ? data.results : [];
+      
+      
       const tp = data?.total_pages || 1;
 
+      
       setTotalPages(tp);
 
+      
       setMovies((prev) => {
         const base = mode === "replace" ? [] : prev;
-
-        // duplicate bo‘lmasin
-        const map = new Map(base.map((m) => [m.id, m]));
-        for (const item of results) map.set(item.id, item);
+        const map = new Map(base.map((m) => [m.id, m]));  
+       for (const item of results) map.set(item.id, item);
         return Array.from(map.values());
       });
 
+
+
       setPage(pageToLoad + 1);
     } catch (e) {
-      console.error(e);
+    
+      console.error("Error loading section data");
     } finally {
       isFetchingRef.current = false;
       setIsLoading?.(false);
@@ -59,7 +64,6 @@ function SectionDetail({ setIsLoading }) {
     isFetchingRef.current = false;
 
     loadPage(1, "replace");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, id, language]);
 
   const handleShowMore = () => {

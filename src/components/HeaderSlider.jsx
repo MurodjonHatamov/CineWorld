@@ -13,11 +13,11 @@ import { Link } from "react-router-dom";
 import { MdNavigateNext } from "react-icons/md";
 
 const IMAGE_ORIGINAL = "https://image.tmdb.org/t/p/original";
-const FALLBACK_BG = "/imgs/img.webp"; // sening fallback
+const FALLBACK_BG = "/imgs/img.webp"; 
 const IMG_BASE = "https://image.tmdb.org/t/p/w500";
 function HeaderSlider() {
   const { language } = useLanguage();
-  const [slides, setSlides] = useState([]); // ✅ [''] emas
+  const [slides, setSlides] = useState([]); 
 
 
   useEffect(() => {
@@ -26,6 +26,7 @@ function HeaderSlider() {
     });
   }, [language]);
 
+  
   if (!slides?.length) return null;
 
   return (

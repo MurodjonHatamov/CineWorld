@@ -17,7 +17,6 @@ export default function SearchPage({ setIsLoading }) {
   const filterMT = (arr = []) =>
     arr.filter((x) => x.media_type === "movie" || x.media_type === "tv");
 
-  // q yoki language o‘zgarsa: boshidan boshlaymiz
   useEffect(() => {
     let mounted = true;
 

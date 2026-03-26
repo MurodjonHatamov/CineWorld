@@ -22,7 +22,7 @@ const releaseDate = movie.release_date || movie.first_air_date || "N/A";
 
       
   return (
-    <Link to={`detail/${type}/${movie.id}`} className="block">
+    <Link to={ `/detail/${type}/${movie.id}` } className="block">
       <div
         className="
           rounded-2xl overflow-hidden relative group cursor-pointer
